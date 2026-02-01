@@ -1,0 +1,71 @@
+# News scoring pipeline – non-secret configuration only.
+# Secrets (API keys, ClickHouse credentials) must be provided via environment variables.
+# See env.example and README for required env vars.
+
+# Symbols and search queries for Tavily (USDJPY, EURUSD, USD focus)
+symbols:
+  - USDJPY
+  - EURUSD
+  - USD
+
+# FX-focused Tavily queries: central banks, macro, yields, positioning, risk events.
+search_queries:
+  # USDJPY
+  - "USDJPY Bank of Japan yield curve control negative rates news"
+  - "USDJPY US 10-year Treasury yields risk sentiment carry trade unwind"
+  - "Japan MoF intervention FX USDJPY latest"
+  # EURUSD
+  - "EURUSD ECB monetary policy inflation comments hawkish dovish"
+  - "Eurozone PMI inflation recession EURUSD impact"
+  - "Bund yields EURUSD spread US Treasuries"
+  # USD macro / broad
+  - "US Federal Reserve FOMC statement dot plot USD reaction"
+  - "US economic data NFP CPI PCE ISM impact on USD"
+  - "US fiscal policy debt ceiling US Treasury issuance USD demand"
+  # Event-structured (time windows)
+  - "this week USDJPY news after Bank of Japan announcements"
+  - "today EURUSD reaction to ECB speeches and economic data"
+  - "last 7 days USD safe haven flows risk-off equities selloff"
+  # Symbol-agnostic FX
+  - "G10 FX volatility USDJPY EURUSD options risk reversals"
+  - "carry trade positioning yen funded trades unwind"
+
+# Tavily API parameters (API key from TAVILY_API_KEY env)
+tavily:
+  search_depth: "advanced"
+  max_results: 30
+  # Freshness: hours to look back (uses start_date/end_date for granular control). FX news moves fast.
+  hours: 48
+  include_raw_content: true
+  include_answer: false
+  auto_parameters: false
+  exclude_domains:
+    - tradingview.com
+
+# Novita/Qwen3 API parameters (API key from NOVITA_API_KEY env)
+novita:
+  model: "qwen/qwen3-max"
+  temperature: 0.2
+  max_tokens: 512
+  base_url: "https://api.novita.ai/v3/openai"
+
+# Batching and scheduling
+batch_size: 50
+sleep_between_batches_seconds: 15
+# Cron interval when running in loop (CRON_INTERVAL_MINUTES env overrides this)
+cron_interval_minutes: 15
+
+# Logarithmic decay for snapshot aggregation (design: base 10, tau=20, cap 1.0)
+# mode: per_currency = one snapshot row per currency (USD,EUR,JPY,GBP) using usd_bias, eur_bias, jpy_bias, gbp_bias.
+#       per_pair = one row per article symbol (arrayJoin) using score_field (e.g. event_risk_score).
+decay:
+  base: 10
+  tau_minutes: 20
+  k: 1.8
+  weight_cap: 1.0
+  snapshot_window_minutes: 60
+  mode: per_currency
+  score_field: event_risk_score
+
+# Prompt: path to NEWS_SCORE_V1 YAML (template with {news_text}, {timestamp}, {source})
+prompt_path: "NEWS_SCORE_V1.yaml"
