@@ -9,13 +9,18 @@ research using:
 """
 
 import logging
+import sys
+from pathlib import Path
 from typing import List, Dict, Optional, TypedDict, Any
 from langgraph.graph import StateGraph, END
 from langchain_core.messages import HumanMessage
 
-from .tools.question_generator import QuestionGenerator
-from .tools.parallel_research import ParallelResearchClient
-from .config import Config
+# Add parent directory to path for imports
+sys.path.insert(0, str(Path(__file__).parent))
+
+from tools.question_generator import QuestionGenerator
+from tools.parallel_research import ParallelResearchClient
+from config import Config
 
 # Configure logging
 logging.basicConfig(

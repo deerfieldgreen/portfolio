@@ -6,8 +6,15 @@ by mocking the external services.
 """
 
 import logging
+import os
+import sys
 from typing import List, Dict, Any
-from unittest.mock import Mock, patch
+from unittest.mock import Mock, patch, MagicMock
+
+# Set dummy environment variables BEFORE importing modules
+os.environ['PARALLEL_API_KEY'] = 'test_parallel_key'
+os.environ['NOVITA_API_KEY'] = 'test_novita_key'
+
 from main import ResearchWorkflow, ResearchState
 
 # Configure logging

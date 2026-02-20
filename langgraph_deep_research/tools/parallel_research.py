@@ -6,11 +6,15 @@ comprehensive research using their Deep Research API.
 """
 
 import logging
-import time
+import sys
+from pathlib import Path
 from typing import Dict, List, Optional, Any
 from parallel import Parallel
 
-from ..config import Config
+# Add parent directory to path
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+from config import Config
 
 logger = logging.getLogger(__name__)
 
@@ -63,17 +67,14 @@ class ParallelResearchClient:
         logger.info(f"Starting research for question: {question}")
         
         try:
-            # Submit the deep research task
-            task = self.client.deep_research.submit(
-                query=question,
+            # Submit the deep research task using task_run.execute
+            result = self.client.task_run.execute(
+                input=question,
+                output="Detailed research report with comprehensive analysis and citations.",
                 processor=self.processor_type
             )
             
-            task_id = task.id
-            logger.info(f"Task submitted with ID: {task_id}")
-            
-            # Poll for completion
-            result = self._poll_for_completion(task_id, timeout)
+            logger.info(f"Research completed successfully")
             
             # Extract and structure the result
             return self._format_result(question, result)
@@ -112,46 +113,6 @@ class ParallelResearchClient:
         
         return results
 
-    def _poll_for_completion(self, task_id: str, timeout: int) -> Any:
-        """
-        Poll the API until the task is complete or timeout is reached.
-        
-        Args:
-            task_id: The task ID to poll
-            timeout: Maximum time to wait in seconds
-            
-        Returns:
-            The completed task result
-            
-        Raises:
-            TimeoutError: If timeout is exceeded
-        """
-        start_time = time.time()
-        
-        while True:
-            elapsed = time.time() - start_time
-            
-            if elapsed > timeout:
-                raise TimeoutError(
-                    f"Research task {task_id} did not complete within {timeout} seconds"
-                )
-            
-            # Check task status
-            task = self.client.deep_research.get(task_id)
-            
-            status = getattr(task, 'status', None)
-            logger.debug(f"Task {task_id} status: {status}")
-            
-            if status == "completed":
-                logger.info(f"Task {task_id} completed successfully")
-                return task
-            elif status == "failed":
-                error_msg = getattr(task, 'error', 'Unknown error')
-                raise Exception(f"Task {task_id} failed: {error_msg}")
-            
-            # Wait before next poll
-            time.sleep(self.poll_interval)
-
     def _format_result(self, question: str, task_result: Any) -> Dict[str, Any]:
         """
         Format the API result into a structured dictionary.
@@ -169,7 +130,9 @@ class ParallelResearchClient:
         }
         
         # Extract answer/report
-        if hasattr(task_result, 'report'):
+        if hasattr(task_result, 'output'):
+            result["answer"] = task_result.output
+        elif hasattr(task_result, 'report'):
             result["answer"] = task_result.report
         elif hasattr(task_result, 'result'):
             result["answer"] = task_result.result
