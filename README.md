@@ -21,6 +21,7 @@ Typical work starts with a **rapid assessment**—stakeholder interviews, benchm
 | Project | Description |
 | ------- | ----------- |
 | [**agentic_financial_news_scoring**](./agentic_financial_news_scoring/) | Cron-style pipeline that fetches FX news (Tavily), scores articles with an LLM (Qwen3 via Novita), and stores results in ClickHouse. A FastAPI app exposes decayed currency scores and recent articles. Example of an agentic, data‑driven pipeline for financial signals. |
+| [**langgraph_deep_research**](./langgraph_deep_research/) | Production-ready LangGraph workflow for comprehensive research using Novita AI (Qwen 3.5 397B) for question generation and Parallel AI Deep Research API. Demonstrates stateful agentic orchestration with multi-step workflows, automatic citation extraction, and report synthesis. |
 
 ---
 
