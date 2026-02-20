@@ -7,6 +7,7 @@ OpenAI-compatible API via Novita AI.
 
 import json
 import logging
+import re
 import sys
 from pathlib import Path
 from typing import List, Optional
@@ -133,7 +134,6 @@ Return your response as a JSON array of strings. Example format:
             pass
         
         # Try to find JSON array in the content
-        import re
         json_match = re.search(r'\[.*?\]', content, re.DOTALL)
         if json_match:
             try:

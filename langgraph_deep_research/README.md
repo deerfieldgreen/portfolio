@@ -424,7 +424,9 @@ time.sleep(2)  # Wait 2 seconds between requests
 
 **Total for 5 questions**: 3-10 minutes
 
-### API Costs (Approximate)
+### API Costs (Approximate as of February 2024)
+
+**Note**: Pricing may vary based on provider updates and usage patterns. Check current pricing on provider websites.
 
 - Novita AI (Qwen 3.5 397B): ~$0.001 per question generation
 - Parallel AI (Ultra processor): ~$0.10-0.50 per research task

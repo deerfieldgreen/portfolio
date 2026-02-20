@@ -117,11 +117,12 @@ class ResearchWorkflow:
                 
         except Exception as e:
             logger.error(f"Error generating questions: {str(e)}")
-            # Provide fallback questions
+            # Provide fallback questions with improved grammar
+            topic_lower = topic.lower()
             state["questions"] = [
-                f"What is {state['topic']}?",
-                f"What are the key aspects of {state['topic']}?",
-                f"What are recent developments in {state['topic']}?"
+                f"What are the key aspects of {topic_lower}?",
+                f"What are recent developments in {topic_lower}?",
+                f"What are the main challenges and opportunities in {topic_lower}?"
             ]
             logger.info(f"Using fallback questions")
         

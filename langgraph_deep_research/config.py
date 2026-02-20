@@ -21,7 +21,7 @@ class Config:
 
     # Novita AI Configuration
     NOVITA_BASE_URL: str = "https://api.novita.ai/v3/openai"
-    NOVITA_MODEL: str = "qwen/qwen3.5-397b-a17b"
+    NOVITA_MODEL: str = "qwen/qwen3.5-397b-a17b"  # a17b is the model variant identifier
     NOVITA_TEMPERATURE: float = 0.7
     NOVITA_MAX_TOKENS: int = 2000
 

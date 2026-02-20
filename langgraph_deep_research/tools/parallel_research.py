@@ -41,13 +41,15 @@ class ParallelResearchClient:
         
         logger.info(f"Initialized ParallelResearchClient with processor: {self.processor_type}")
 
-    def research(self, question: str, timeout: Optional[int] = None) -> Dict[str, Any]:
+    def research(self, question: str, timeout: Optional[int] = None, 
+                 output_description: Optional[str] = None) -> Dict[str, Any]:
         """
         Submit a research question and wait for results.
         
         Args:
             question: The research question to investigate
             timeout: Optional timeout in seconds (default: from config)
+            output_description: Optional custom output format description
             
         Returns:
             Dictionary containing:
@@ -64,13 +66,16 @@ class ParallelResearchClient:
             raise ValueError("Question cannot be empty")
         
         timeout = timeout or self.timeout
+        output_description = output_description or \
+            "Detailed research report with comprehensive analysis and citations."
+        
         logger.info(f"Starting research for question: {question}")
         
         try:
             # Submit the deep research task using task_run.execute
             result = self.client.task_run.execute(
                 input=question,
-                output="Detailed research report with comprehensive analysis and citations.",
+                output=output_description,
                 processor=self.processor_type
             )
             
