@@ -23,7 +23,8 @@ class Config:
     NOVITA_BASE_URL: str = "https://api.novita.ai/v3/openai"
     NOVITA_MODEL: str = "qwen/qwen3.5-397b-a17b"  # a17b is the model variant identifier
     NOVITA_TEMPERATURE: float = 0.7
-    NOVITA_MAX_TOKENS: int = 2000
+    NOVITA_MAX_TOKENS: int = 2000           # question generation (~5 questions)
+    NOVITA_SYNTHESIS_MAX_TOKENS: int = 8000  # report synthesis (scales with # of questions)
 
     # Parallel AI Configuration
     PARALLEL_PROCESSOR_TYPE: str = "ultra"  # High-quality research processor
@@ -58,6 +59,7 @@ class Config:
             "model": cls.NOVITA_MODEL,
             "temperature": cls.NOVITA_TEMPERATURE,
             "max_tokens": cls.NOVITA_MAX_TOKENS,
+            "synthesis_max_tokens": cls.NOVITA_SYNTHESIS_MAX_TOKENS,
         }
 
     @classmethod
