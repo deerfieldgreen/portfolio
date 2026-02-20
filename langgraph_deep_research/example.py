@@ -1,11 +1,9 @@
 """
 Example script demonstrating the LangGraph Deep Research workflow.
 
-This script shows how to:
-1. Initialize the research workflow
-2. Run research on a specific topic
-3. Display results with progress tracking
-4. Pretty-print the final report
+Shows two usage patterns:
+1. Streaming  — real-time output via workflow.stream()
+2. Blocking   — full result via workflow.run()
 """
 
 import logging
@@ -25,102 +23,105 @@ def print_separator(char="=", length=80):
     print(char * length)
 
 
-def print_questions(questions):
-    """Pretty-print generated questions."""
+def run_streaming_example(topic: str) -> None:
+    """Run research workflow with streaming output."""
+    print()
+    print_separator()
+    print("LANGGRAPH DEEP RESEARCH — STREAMING MODE")
+    print_separator()
+    print(f"Topic: {topic}")
+    print()
+
+    workflow = create_workflow()
+
+    print("Starting streaming research...\n")
+    print_separator("-")
+    print()
+
+    for event in workflow.stream(topic):
+        event_type = event["type"]
+
+        if event_type == "status":
+            print(f"\n[{event['message']}]")
+            if "questions" in event:
+                for i, q in enumerate(event["questions"], 1):
+                    print(f"  {i}. {q}")
+
+        elif event_type == "token":
+            # Print synthesis tokens as they arrive — no newline so they flow
+            print(event["content"], end="", flush=True)
+
+        elif event_type == "complete":
+            state = event["state"]
+            print("\n")
+            print_separator()
+            print(
+                f"Done. {len(state['research_results'])} questions researched, "
+                f"report is {len(state.get('final_report', ''))} characters."
+            )
+            print_separator()
+
+
+def run_blocking_example(topic: str) -> None:
+    """Run research workflow and display results after completion."""
+    print()
+    print_separator()
+    print("LANGGRAPH DEEP RESEARCH — BLOCKING MODE")
+    print_separator()
+    print(f"Topic: {topic}")
+    print()
+
+    workflow = create_workflow()
+    print("Running research workflow (this may take a few minutes)...\n")
+
+    result = workflow.run(topic)
+
     print_separator()
     print("GENERATED RESEARCH QUESTIONS")
     print_separator()
-    print()
-    for i, question in enumerate(questions, 1):
-        print(f"{i}. {question}")
+    for i, q in enumerate(result["questions"], 1):
+        print(f"{i}. {q}")
     print()
 
-
-def print_research_progress(results):
-    """Print research progress and summaries."""
     print_separator()
     print("RESEARCH RESULTS")
     print_separator()
-    print()
-    
-    for i, result in enumerate(results, 1):
-        print(f"Question {i}: {result['question']}")
-        print(f"Status: {result['status']}")
-        
-        if result.get('answer'):
-            # Print first 200 characters of the answer
-            answer_preview = result['answer'][:200]
-            if len(result['answer']) > 200:
-                answer_preview += "..."
-            print(f"Answer preview: {answer_preview}")
-        
-        citations = result.get('citations', [])
-        if citations:
-            print(f"Citations: {len(citations)} sources")
-        
-        if result.get('error'):
-            print(f"Error: {result['error']}")
-        
+    for i, r in enumerate(result["research_results"], 1):
+        print(f"Question {i}: {r['question']}")
+        print(f"Status: {r['status']}")
+        if r.get("answer"):
+            preview = r["answer"][:200]
+            if len(r["answer"]) > 200:
+                preview += "..."
+            print(f"Answer preview: {preview}")
+        if r.get("citations"):
+            print(f"Citations: {len(r['citations'])} sources")
+        if r.get("error"):
+            print(f"Error: {r['error']}")
         print()
 
+    if result["final_report"]:
+        print_separator()
+        print("FINAL RESEARCH REPORT")
+        print_separator()
+        print(result["final_report"])
 
-def print_final_report(report):
-    """Pretty-print the final report."""
-    print_separator("=")
-    print("FINAL RESEARCH REPORT")
-    print_separator("=")
-    print()
-    print(report)
-    print()
+    print_separator()
+    print("Research workflow completed successfully!")
+    print_separator()
 
 
 def main():
-    """Run the example research workflow."""
-    # Research topic
+    """Run the streaming example by default."""
     topic = "renewable energy storage technologies"
-    
-    print()
-    print_separator("=")
-    print(f"LANGGRAPH DEEP RESEARCH EXAMPLE")
-    print_separator("=")
-    print()
-    print(f"Research Topic: {topic}")
-    print()
-    print("This example demonstrates a complete research workflow:")
-    print("1. Generate focused research questions (Novita AI - Qwen 3.5 397B)")
-    print("2. Conduct deep research for each question (Parallel AI)")
-    print("3. Synthesize findings into a comprehensive report")
-    print()
-    
+
     try:
-        # Create and run the workflow
-        print("Initializing workflow...")
-        workflow = create_workflow()
-        
-        print(f"Starting research on: {topic}")
-        print()
-        
-        # Run the workflow
-        result = workflow.run(topic)
-        
-        # Display results step by step
-        print()
-        print_questions(result['questions'])
-        
-        print_research_progress(result['research_results'])
-        
-        if result['final_report']:
-            print_final_report(result['final_report'])
-        
-        print_separator("=")
-        print("Research workflow completed successfully!")
-        print_separator("=")
-        
+        run_streaming_example(topic)
     except Exception as e:
         print()
-        print_separator("=")
+        print_separator()
         print(f"ERROR: {str(e)}")
-        print_separator("=")
+        print_separator()
         print()
         print("Make sure you have:")
         print("1. Set PARALLEL_API_KEY in your environment")

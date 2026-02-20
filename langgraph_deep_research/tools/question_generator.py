@@ -116,15 +116,19 @@ Return your response as a JSON array of strings. Example format:
     def _parse_questions(self, content: str) -> List[str]:
         """
         Parse questions from model response.
-        
-        Handles various response formats and extracts the JSON array.
-        
+
+        Handles various response formats including reasoning-model outputs that
+        wrap content in <think>...</think> blocks (e.g. Qwen 3.5).
+
         Args:
             content: Raw content from the model
-            
+
         Returns:
             List of question strings
         """
+        # Strip <think>...</think> blocks produced by reasoning models (Qwen, etc.)
+        content = re.sub(r'<think>.*?</think>', '', content, flags=re.DOTALL).strip()
+
         # Try direct JSON parsing
         try:
             questions = json.loads(content)
@@ -132,9 +136,11 @@ Return your response as a JSON array of strings. Example format:
                 return [q.strip() for q in questions if q.strip()]
         except json.JSONDecodeError:
             pass
-        
-        # Try to find JSON array in the content
-        json_match = re.search(r'\[.*?\]', content, re.DOTALL)
+
+        # Find the LAST (outermost) JSON array in the content.
+        # Use a greedy match so we capture the full array, not the first short [...]
+        # that might appear inside a thinking block or prose.
+        json_match = re.search(r'\[.*\]', content, re.DOTALL)
         if json_match:
             try:
                 questions = json.loads(json_match.group())
@@ -142,7 +148,7 @@ Return your response as a JSON array of strings. Example format:
                     return [q.strip() for q in questions if q.strip()]
             except json.JSONDecodeError:
                 pass
-        
+
         # Fallback: split by newlines and filter
         lines = [line.strip() for line in content.split('\n') if line.strip()]
         questions = []
@@ -151,7 +157,7 @@ Return your response as a JSON array of strings. Example format:
             line = re.sub(r'^[\d\.\-\*\)]+\s*', '', line)
             if line and len(line) > 10:  # Reasonable minimum length
                 questions.append(line)
-        
+
         return questions
 
 

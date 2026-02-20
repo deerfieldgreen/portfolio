@@ -1,480 +1,373 @@
-# LangGraph Deep Research
+# 🔬 LangGraph Deep Research
 
-A production-ready prototype demonstrating agentic research workflows using **LangGraph** for orchestration, **Parallel AI Deep Research API** for comprehensive research, and **Novita AI (Qwen 3.5 397B)** for intelligent question generation.
+> **Agentic research at production quality.** Drop in a topic, get back a fully cited, LLM-synthesised research report — streamed token-by-token in real time.
 
----
-
-## Overview
-
-This project showcases a stateful, multi-step research workflow that:
-
-1. **Generates Research Questions**: Uses Novita AI's Qwen 3.5 397B model to create focused, complementary research questions from a topic
-2. **Conducts Deep Research**: Leverages Parallel AI's ultra processor to research each question comprehensively
-3. **Synthesizes Results**: Combines findings into a structured report with inline citations
-
-The entire workflow is orchestrated through LangGraph's state management system, providing transparent progress tracking and error handling.
+Built on **LangGraph** for stateful orchestration, **Parallel AI Deep Research** for comprehensive multi-source investigation, and **Novita AI (Qwen 3.5 397B)** for razor-sharp question generation and live streaming synthesis.
 
 ---
 
-## Architecture
+## ✨ What It Does
 
-### State Management
-
-The workflow uses a `ResearchState` TypedDict to track:
-
-```python
-class ResearchState(TypedDict):
-    topic: str                          # Original research topic
-    questions: List[str]                # Generated questions
-    research_results: List[Dict]        # Research findings
-    final_report: Optional[str]         # Synthesized report
-    step: str                           # Current workflow step
 ```
+You: "impact of AI on financial markets"
+
+  ↓ Qwen 3.5 397B generates 5 targeted research questions (~30 s)
+
+  ↓ 5 Parallel AI ultra-processor tasks fire simultaneously (~20 min)
+    • HFT algorithms and market volatility
+    • NLP sentiment analysis and price discovery
+    • Homogeneous AI models and flash-crash risk
+    • ML credit scoring vs. logistic regression
+    • Regulatory frameworks for black-box AI
+
+  ↓ Qwen 3.5 397B synthesises a structured report — streamed live
+
+You: A fully cited, multi-section research report with tables,
+     event evidence, regulatory analysis, and a conclusion.
+```
+
+---
+
+## 🏗️ Architecture
 
 ### Workflow Graph
 
 ```
 START
-  ↓
-generate_questions (Novita AI - Qwen 3.5 397B)
-  ↓
-conduct_research (Parallel AI Deep Research)
-  ↓
-synthesize_results (Report Generation)
-  ↓
-END
+  │
+  ▼
+┌─────────────────────┐
+│  generate_questions │  Novita AI · Qwen 3.5 397B
+│                     │  → 3–5 focused research questions
+└──────────┬──────────┘
+           │
+  ▼
+┌─────────────────────┐
+│  conduct_research   │  Parallel AI · ultra processor
+│                     │  → All questions fired simultaneously
+│   [Q1]──[Q2]──[Q3] │    via ThreadPoolExecutor
+│      [Q4]──[Q5]    │  → Results collected in original order
+└──────────┬──────────┘
+           │
+  ▼
+┌─────────────────────┐
+│  synthesize_results │  Novita AI · Qwen 3.5 397B (stream=True)
+│                     │  → LLM-written report, streamed live
+└──────────┬──────────┘
+           │
+          END
 ```
 
-### Components
+### State Schema
 
-| Component | Technology | Role |
-|-----------|-----------|------|
-| **Question Generator** | Novita AI (Qwen 3.5 397B) | Generates 3-5 focused research questions from a topic |
-| **Research Client** | Parallel AI Deep Research | Conducts comprehensive research with citations |
-| **Workflow Orchestrator** | LangGraph | Manages state transitions and execution flow |
-| **Result Synthesizer** | Python | Combines findings into structured markdown report |
+```python
+class ResearchState(TypedDict):
+    topic: str                        # Original research topic
+    questions: List[str]              # Generated research questions
+    research_results: List[Dict]      # Parallel AI findings + citations
+    final_report: Optional[str]       # LLM-synthesised markdown report
+    step: str                         # Current workflow node
+```
+
+### Component Map
+
+| Component | Technology | Responsibility |
+|-----------|-----------|----------------|
+| 🧠 **Question Generator** | Novita AI · Qwen 3.5 397B | Generates 3–5 sharp, non-overlapping research questions; strips `<think>` reasoning tokens before JSON parsing |
+| 🔍 **Research Client** | Parallel AI · ultra | Submits all questions in parallel; collects findings and citations; preserves order |
+| 🔀 **Orchestrator** | LangGraph | Manages `ResearchState`, node transitions, and error propagation |
+| ✍️ **Synthesiser** | Novita AI · Qwen 3.5 397B (streaming) | Writes the final report live via `stream=True`; falls back to template on failure |
 
 ---
 
-## Setup
+## ⚡ Streaming Design
+
+The `stream()` method yields a sequence of typed events so any consumer (CLI, API, WebSocket) can handle progress updates and report tokens independently:
+
+```python
+for event in workflow.stream("your topic"):
+
+    if event["type"] == "status":
+        # Progress update — e.g. "Generated 5 research questions"
+        print(f"\n[{event['message']}]")
+        if "questions" in event:
+            for q in event["questions"]:
+                print(f"  • {q}")
+
+    elif event["type"] == "token":
+        # Live synthesis token — print without newline for streaming effect
+        print(event["content"], end="", flush=True)
+
+    elif event["type"] == "complete":
+        # Final state dict with the full report
+        state = event["state"]
+```
+
+**Event types:**
+
+| `type` | Extra keys | When |
+|--------|-----------|------|
+| `"status"` | `message`, optionally `questions` | Progress milestones |
+| `"token"` | `content` | Each synthesis token from the LLM |
+| `"complete"` | `state` | After the full report is assembled |
+
+---
+
+## 🚀 Quick Start
 
 ### 1. Prerequisites
 
 - Python 3.11+
-- API keys for:
-  - Parallel AI Deep Research
-  - Novita AI
+- [Parallel AI](https://parallel.ai) API key (ultra processor)
+- [Novita AI](https://novita.ai) API key
 
-### 2. Installation
+### 2. Install
 
 ```bash
-# Clone the repository (if not already done)
 cd langgraph_deep_research
-
-# Create a virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# Install dependencies
+python -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 3. Configuration
-
-Create a `.env` file (use `.env.example` as a template):
+### 3. Configure
 
 ```bash
 cp .env.example .env
+# add PARALLEL_API_KEY and NOVITA_API_KEY
 ```
 
-Edit `.env` and add your API keys:
+Or use [Doppler](https://doppler.com) (recommended for teams):
 
+```bash
+doppler setup   # link to your Doppler project
+doppler run -- python main.py "your topic"
 ```
-PARALLEL_API_KEY=your_actual_parallel_api_key
-NOVITA_API_KEY=your_actual_novita_api_key
-```
-
-**Important**: Never commit `.env` to version control. It's already in `.gitignore`.
 
 ---
 
-## Usage
-
-### Run the Example
+## 🖥️ CLI Usage
 
 ```bash
-python example.py
+# Stream a full report (default)
+python main.py "impact of AI on financial markets"
+
+# Fast iteration — skip Parallel AI, use stub answers (~90 seconds total)
+python main.py --mock "impact of AI on financial markets"
+
+# Blocking mode — wait silently, then print the completed report
+python main.py --no-stream "impact of AI on financial markets"
+
+# Built-in help
+python main.py --help
 ```
 
-This demonstrates research on "renewable energy storage technologies" and shows:
-- Generated research questions
-- Progress through each research step
-- Final synthesized report with citations
+### `--mock` mode for fast iteration
 
-### Use as a Library
+The `--mock` flag is the key to tight development cycles:
+
+| | `--mock` | Full run |
+|---|---|---|
+| Question generation (Novita AI) | ✅ Real | ✅ Real |
+| Parallel AI deep research | ⚡ Instant stubs | ✅ Real |
+| LLM synthesis streaming (Novita AI) | ✅ Real | ✅ Real |
+| **Total time** | **~90 seconds** | **~20–30 minutes** |
+
+Use `--mock` to iterate on prompts, streaming behaviour, and report formatting without burning Parallel AI credits or waiting 20 minutes per cycle.
+
+---
+
+## 📦 Library Usage
+
+### Streaming (recommended)
 
 ```python
 from main import create_workflow
 
-# Create the workflow
 workflow = create_workflow()
 
-# Run research on any topic
-result = workflow.run("quantum computing applications in cryptography")
-
-# Access results
-print(f"Questions: {result['questions']}")
-print(f"Report: {result['final_report']}")
+for event in workflow.stream("quantum computing in cryptography"):
+    if event["type"] == "token":
+        print(event["content"], end="", flush=True)
+    elif event["type"] == "status":
+        print(f"\n[{event['message']}]")
 ```
 
-### Direct Tool Usage
+### Blocking
 
-You can also use individual tools:
+```python
+result = workflow.run("quantum computing in cryptography")
+print(result["final_report"])
+```
+
+### Mock mode (fast iteration)
+
+```python
+for event in workflow.stream("quantum computing", mock=True):
+    ...  # Same event types, Parallel AI replaced with instant stubs
+```
+
+### Individual tools
 
 ```python
 from tools.question_generator import generate_research_questions
-from tools.parallel_research import conduct_research
+from tools.parallel_research import conduct_research_multiple
 
-# Generate questions
-questions = generate_research_questions("artificial intelligence ethics")
-
-# Research a specific question
-result = conduct_research("What are the ethical implications of AI in healthcare?")
+questions = generate_research_questions("AI ethics in healthcare")
+results   = conduct_research_multiple(questions)   # runs in parallel
 ```
 
 ---
 
-## Example Output
-
-### Generated Questions
-
-```
-1. What are the current leading renewable energy storage technologies?
-2. How do lithium-ion batteries compare to flow batteries and other solutions?
-3. What are the emerging technologies in grid-scale energy storage?
-4. What are the economic considerations for renewable energy storage deployment?
-5. What are the environmental impacts of different storage technologies?
-```
-
-### Research Result Structure
-
-```python
-{
-    "question": "What are the current leading renewable energy storage technologies?",
-    "answer": "The leading renewable energy storage technologies include...",
-    "citations": [
-        {
-            "title": "Energy Storage Technology Review 2024",
-            "url": "https://example.com/article"
-        }
-    ],
-    "status": "completed"
-}
-```
-
-### Final Report
-
-The synthesized report includes:
-- **Title and Executive Summary**: Overview of the research scope
-- **Detailed Findings**: Section for each research question with answers and citations
-- **Conclusion**: Summary of coverage and key insights
-
----
-
-## Configuration Options
-
-### Environment Variables
-
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `PARALLEL_API_KEY` | Yes | API key for Parallel AI Deep Research |
-| `NOVITA_API_KEY` | Yes | API key for Novita AI services |
-
-### Research Parameters
-
-Edit `config.py` to customize:
-
-```python
-# Question generation
-MIN_QUESTIONS = 3          # Minimum questions to generate
-MAX_QUESTIONS = 5          # Maximum questions to generate
-
-# Novita AI settings
-NOVITA_TEMPERATURE = 0.7   # Creativity (0.0-1.0)
-NOVITA_MAX_TOKENS = 2000   # Max response length
-
-# Parallel AI settings
-PARALLEL_PROCESSOR_TYPE = "ultra"  # Research quality level
-PARALLEL_TIMEOUT = 300     # Max time per research task (seconds)
-PARALLEL_POLL_INTERVAL = 5 # How often to check for results
-```
-
----
-
-## Testing
-
-### Run Test Suite
+## 🧪 Testing
 
 ```bash
 python test_workflow.py
 ```
 
-This runs tests using mocked APIs to verify:
-- Question generation logic
-- Research execution flow
-- Result synthesis
-- State transitions
-- Output formatting
+All 5 tests run with mocked APIs — **no API keys required**:
 
-Tests pass without requiring actual API keys.
+| Test | What it checks |
+|------|---------------|
+| `test_question_generation` | Fallback questions, state mutation |
+| `test_research_execution` | Parallel client, error recovery |
+| `test_result_synthesis` | LLM synthesis with template fallback |
+| `test_state_transitions` | Full graph traversal via `workflow.run()` |
+| `test_output_formatting` | Markdown structure, citation links |
 
 ---
 
-## Project Structure
+## ⚙️ Configuration Reference
+
+### Environment variables
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `PARALLEL_API_KEY` | ✅ | Parallel AI Deep Research key |
+| `NOVITA_API_KEY` | ✅ | Novita AI key (Qwen 3.5 397B) |
+
+### `config.py` tunables
+
+```python
+# Question generation
+MIN_QUESTIONS = 3             # Lower bound on questions generated
+MAX_QUESTIONS = 5             # Upper bound on questions generated
+
+# Novita AI
+NOVITA_TEMPERATURE       = 0.7   # Creativity (0.0 = deterministic)
+NOVITA_MAX_TOKENS        = 2000  # Budget for question generation
+NOVITA_SYNTHESIS_MAX_TOKENS = 8000  # Budget for report synthesis
+
+# Parallel AI
+PARALLEL_PROCESSOR_TYPE  = "ultra"  # Research quality tier
+PARALLEL_TIMEOUT         = 300      # Per-task timeout (seconds)
+```
+
+> **Why separate token limits?** Question generation needs ~200–400 tokens. Report synthesis for 5 deeply researched questions easily exceeds 2 000 tokens — the original shared limit caused the last section to be cut off mid-sentence.
+
+---
+
+## 📁 Project Structure
 
 ```
 langgraph_deep_research/
-├── main.py                      # Main workflow implementation
-├── config.py                    # Configuration management
-├── example.py                   # Runnable example
-├── test_workflow.py            # Test suite
-├── requirements.txt            # Python dependencies
-├── .env.example               # Environment template
-├── README.md                  # This file
+├── main.py                 # Workflow, streaming, CLI entry point
+├── config.py               # API keys and tunables
+├── example.py              # Runnable demo (streaming + blocking)
+├── test_workflow.py        # Full test suite (no API keys needed)
+├── requirements.txt        # Python dependencies
+├── .env.example            # Environment template
 └── tools/
-    ├── __init__.py
-    ├── question_generator.py  # Novita AI question generation
-    └── parallel_research.py   # Parallel AI research client
+    ├── question_generator.py   # Novita AI · question generation
+    └── parallel_research.py    # Parallel AI · concurrent research
 ```
 
 ---
 
-## How It Works
+## 🔧 Known Behaviours
 
-### 1. Question Generation Node
-
-The `generate_questions` node:
-- Takes the research topic from state
-- Sends it to Novita AI's Qwen 3.5 397B model with a specialized prompt
-- Extracts and validates 3-5 focused questions
-- Updates state with questions
-- Has fallback logic if generation fails
-
-**Prompt Engineering**: The system prompt instructs the model to:
-- Analyze the topic comprehensively
-- Generate specific, actionable questions
-- Ensure questions are complementary (different aspects)
-- Format as a clean JSON array
-
-### 2. Research Execution Node
-
-The `conduct_research` node:
-- Takes questions from state
-- Submits each to Parallel AI's Deep Research API
-- Polls for completion (with timeout)
-- Extracts answers and citations
-- Updates state with structured results
-
-**Research Quality**: Uses Parallel AI's "ultra" processor for:
-- Comprehensive source analysis
-- Fact verification
-- High-quality citations
-- Detailed findings
-
-### 3. Result Synthesis Node
-
-The `synthesize_results` node:
-- Takes topic, questions, and research results from state
-- Creates a structured markdown report with:
-  - Executive summary
-  - Detailed findings per question
-  - Inline citations
-  - Conclusion
-- Updates state with final report
-
-**Report Structure**: Follows academic standards with clear sections and source attribution.
+| Behaviour | Explanation |
+|-----------|-------------|
+| **408 timeouts from Parallel AI** | Expected. The SDK uses long-polling with a ~10-minute window. 408 means "still working" — the SDK retries automatically. |
+| **`<think>` tag stripping** | Qwen 3.5 is a reasoning model that emits chain-of-thought before the JSON. The parser strips those blocks before extracting questions. |
+| **Questions arrive out of order** | Research runs in parallel; `Completed question 3/5` may log before `2/5`. Results are always returned in original question order. |
+| **LLM synthesis fallback** | If the Novita streaming call fails, the synthesiser falls back to a template-based report automatically. |
 
 ---
 
-## Extending the Workflow
+## 🛠️ Extending the Workflow
 
-### Add New Nodes
+### Add a custom node
 
 ```python
-def custom_node(state: ResearchState) -> ResearchState:
-    """Your custom processing logic."""
-    state["step"] = "custom"
-    # Do something with state
+def validate_research(state: ResearchState) -> ResearchState:
+    """Flag low-confidence results before synthesis."""
+    state["research_results"] = [
+        r for r in state["research_results"]
+        if r.get("status") == "completed"
+    ]
     return state
 
-# Add to workflow
-workflow.add_node("custom_node", custom_node)
-workflow.add_edge("conduct_research", "custom_node")
-workflow.add_edge("custom_node", "synthesize_results")
+workflow.add_node("validate", validate_research)
+workflow.add_edge("conduct_research", "validate")
+workflow.add_edge("validate", "synthesize_results")
 ```
 
-### Add Conditional Routing
+### Add conditional routing
 
 ```python
-def should_do_more_research(state: ResearchState) -> str:
-    """Decide if more research is needed."""
-    if len(state["research_results"]) < 3:
-        return "generate_questions"
-    return "synthesize_results"
+def needs_more_research(state: ResearchState) -> str:
+    completed = sum(1 for r in state["research_results"] if r.get("status") == "completed")
+    return "conduct_research" if completed < 3 else "synthesize_results"
 
-workflow.add_conditional_edges(
-    "conduct_research",
-    should_do_more_research
-)
+workflow.add_conditional_edges("conduct_research", needs_more_research)
 ```
 
-### Use Different Models
-
-Edit `config.py`:
+### Swap the LLM
 
 ```python
-# Try different Novita models
-NOVITA_MODEL = "meta-llama/llama-3.1-405b-instruct"
+# config.py
+NOVITA_MODEL    = "meta-llama/llama-3.1-405b-instruct"
+NOVITA_BASE_URL = "https://api.novita.ai/v3/openai"
 
-# Or use OpenAI directly
+# Or point at any OpenAI-compatible endpoint
 NOVITA_BASE_URL = "https://api.openai.com/v1"
-NOVITA_MODEL = "gpt-4"
+NOVITA_MODEL    = "gpt-4o"
 ```
 
 ---
 
-## Best Practices
+## 📊 Performance & Cost
 
-### Prompt Engineering
+### Typical timing
 
-1. **Be Specific**: "Generate questions about X" → "Generate 5 specific research questions covering technical, economic, and environmental aspects of X"
+| Stage | Time |
+|-------|------|
+| Question generation | 20–60 s |
+| Deep research (5 × ultra, parallel) | 15–30 min |
+| LLM synthesis (streaming) | 1–3 min |
+| **Total** | **~20–35 min** |
 
-2. **Provide Context**: Include what makes a good question in your prompts
+With `--mock`: **~90 seconds**.
 
-3. **Request Structure**: Ask for JSON or markdown to make parsing easier
+### Approximate cost (5 questions)
 
-### API Usage
-
-1. **Rate Limiting**: Add delays between requests if you hit rate limits
-
-2. **Error Handling**: Both tools include retry logic and graceful degradation
-
-3. **Timeouts**: Adjust `PARALLEL_TIMEOUT` based on your research complexity
-
-### Cost Management
-
-1. **Question Count**: Fewer questions = lower costs (3-5 is optimal)
-
-2. **Model Selection**: Qwen 3.5 397B is cost-effective; GPT-4 is more expensive
-
-3. **Processor Type**: Parallel AI's "ultra" is highest quality but costs more than "standard"
+| Service | Cost |
+|---------|------|
+| Novita AI — question gen + synthesis | ~$0.01 |
+| Parallel AI — 5 × ultra tasks | ~$0.50–$2.50 |
+| **Total per run** | **~$0.51–$2.51** |
 
 ---
 
-## Troubleshooting
+## 🔒 Security
 
-### "API key not found" Error
-
-**Solution**: Ensure `.env` file exists and contains valid keys:
-
-```bash
-cat .env  # Should show your keys
-```
-
-### "Module not found" Error
-
-**Solution**: Install dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
-### Questions Don't Parse Correctly
-
-**Solution**: The question generator handles multiple formats. If issues persist:
-- Check `NOVITA_TEMPERATURE` (lower = more consistent)
-- Verify the model is responding with JSON
-
-### Research Times Out
-
-**Solution**: Increase timeout in `config.py`:
-
-```python
-PARALLEL_TIMEOUT = 600  # 10 minutes
-```
-
-### Rate Limit Errors
-
-**Solution**: Add delays between research tasks in `parallel_research.py`:
-
-```python
-import time
-time.sleep(2)  # Wait 2 seconds between requests
-```
+- API keys loaded exclusively from environment variables — never hard-coded
+- `.env` listed in `.gitignore`
+- All inputs validated before API calls
+- API errors logged but not surfaced to callers in raw form
 
 ---
 
-## Performance Notes
+## 📄 License
 
-### Typical Execution Times
-
-- Question generation: 5-15 seconds
-- Research per question: 30-120 seconds (depends on complexity)
-- Synthesis: < 1 second
-
-**Total for 5 questions**: 3-10 minutes
-
-### API Costs (Approximate as of February 2024)
-
-**Note**: Pricing may vary based on provider updates and usage patterns. Check current pricing on provider websites.
-
-- Novita AI (Qwen 3.5 397B): ~$0.001 per question generation
-- Parallel AI (Ultra processor): ~$0.10-0.50 per research task
-
-**Total for 5 questions**: ~$0.50-2.50
-
----
-
-## Security
-
-- **No Secrets in Code**: All API keys come from environment variables
-- **`.env` Not Committed**: Listed in `.gitignore`
-- **Input Validation**: All user inputs are validated before API calls
-- **Error Sanitization**: API errors don't leak sensitive information
-
----
-
-## License
-
-See [LICENSE](../LICENSE) in the parent directory (Apache 2.0).
-
----
-
-## Support
-
-For issues or questions:
-1. Check this README's troubleshooting section
-2. Review the code comments and docstrings
-3. Open an issue in the repository
-
----
-
-## Acknowledgments
-
-- **LangGraph**: For stateful workflow orchestration
-- **Parallel AI**: For comprehensive deep research capabilities
-- **Novita AI**: For access to Qwen 3.5 397B and other models
-
----
-
-## Future Enhancements
-
-Potential additions to this prototype:
-- [ ] Parallel question research (async execution)
-- [ ] Interactive refinement (ask follow-up questions)
-- [ ] Multi-format output (PDF, HTML, JSON)
-- [ ] Research caching (avoid duplicate searches)
-- [ ] Streaming results (show progress in real-time)
-- [ ] Custom citation formatting (APA, MLA, Chicago)
-- [ ] Source verification (fact-checking layer)
-- [ ] Multi-language support
+[Apache 2.0](../LICENSE)
