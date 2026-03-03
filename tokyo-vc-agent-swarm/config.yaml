@@ -1,0 +1,47 @@
+# Tokyo VC Agent Swarm – non-secret configuration only.
+# Secrets (API keys, ClickHouse credentials) must be provided via environment variables.
+# See .env.example for required env vars.
+
+# Novita AI / Qwen3 model parameters
+novita:
+  base_url: "https://api.novita.ai/v3/openai"
+  model: "qwen/qwen3-max"
+  temperature: 0.2
+  max_tokens: 512
+
+# Composite scoring weights per dimension.
+# invert: true → the ranker applies (10 - score) before weighting (higher risk = lower composite).
+dimensions:
+  market:
+    weight: 1.0
+    invert: false
+  team:
+    weight: 1.2
+    invert: false
+  product:
+    weight: 1.0
+    invert: false
+  traction:
+    weight: 1.5
+    invert: false
+  syndication_fit:
+    weight: 1.5
+    invert: false
+  risk_regulatory:
+    weight: 0.8
+    invert: true
+  japan_fit:
+    weight: 1.0
+    invert: false
+
+# FastAPI settings
+api:
+  top_k_default: 10
+  host: "0.0.0.0"
+  port: 8000
+
+# ClickHouse table names
+clickhouse:
+  scores_table: "deal_scores"
+  rankings_table: "deal_rankings"
+  database: "vc_swarm"
