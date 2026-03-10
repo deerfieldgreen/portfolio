@@ -1,0 +1,72 @@
+{
+  "major_wires_and_financial_media": [
+    "bloomberg.com",
+    "reuters.com",
+    "cnbc.com",
+    "wsj.com",
+    "marketwatch.com",
+    "barrons.com",
+    "ft.com",
+    "economist.com",
+    "forbes.com",
+    "thestreet.com",
+    "investing.com",
+    "investopedia.com",
+    "markets.businessinsider.com",
+    "money.cnn.com",
+    "yahoo.com",
+    "fortune.com"
+  ],
+  "central_banks_and_official": [
+    "boj.or.jp",
+    "federalreserve.gov",
+    "ecb.europa.eu",
+    "bankofengland.co.uk",
+    "bis.org",
+    "imf.org",
+    "worldbank.org",
+    "bankofcanada.ca",
+    "rba.gov.au",
+    "rbi.org.in",
+    "bankofkorea.co.kr",
+    "snb.ch",
+    "bundesbank.de",
+    "riksbank.se",
+    "bankofrussia.ru"
+  ],
+  "fx_and_macro_aggregators": [
+    "zerohedge.com",
+    "economictimes.indiatimes.com",
+    "dailyfx.com",
+    "forexlive.com",
+    "fxstreet.com",
+    "seekingalpha.com",
+    "marketwatch.com",
+    "investing.com"
+  ],
+  "japan_and_jpy_relevant_media": [
+    "nikkei.com",
+    "asia.nikkei.com",
+    "asahi.com",
+    "yomiuri.co.jp",
+    "mainichi.jp",
+    "jiji.com",
+    "kyodonews.net",
+    "japantimes.co.jp",
+    "nhk.or.jp"
+  ],
+  "other_regional_outlets": [
+    "scmp.com",
+    "straitstimes.com",
+    "ftchinese.com",
+    "caixin.com",
+    "livemint.com",
+    "business-standard.com",
+    "moneycontrol.com",
+    "smh.com.au",
+    "afr.com"
+  ],
+  "exclude_domains": [
+    "tradingview.com"
+  ]
+}

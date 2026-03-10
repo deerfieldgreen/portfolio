@@ -1,0 +1,343 @@
+# Validation workflow for market_session_volume pipeline.
+# Runs gen-pca-tasks → pca → statistics only (stops before train-single-step).
+# Ends with a verify-clickhouse step that confirms connectivity and OHLCV data presence.
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: market-session-volume-validate
+  namespace: argo-workflows
+spec:
+  serviceAccountName: argo-workflow-executor
+  imagePullSecrets:
+  - name: ams3-digitalocean-cervid-registry
+  nodeSelector:
+    doks.digitalocean.com/node-pool: ams3-digitalocean-cervid-gpu-pool
+  entrypoint: main
+  parallelism: 6
+
+  arguments:
+    parameters:
+    - name: timeframes
+      value: '["H1", "H4"]'
+    - name: pairs
+      value: '["USD_JPY"]'
+
+  templates:
+  # --- DAG: gen-pca-tasks → pca → statistics → verify-clickhouse ---
+  - name: main
+    dag:
+      tasks:
+      # 1a. Generate PCA task list (model × pair × timeframe)
+      - name: gen-pca-tasks
+        template: gen-pca-tasks-template
+
+      # 1b. PCA (parallel: one task per model × pair × timeframe)
+      - name: pca
+        depends: gen-pca-tasks
+        template: pca-step
+        arguments:
+          parameters:
+          - name: dataset
+            value: "{{item}}"
+        withParam: "{{tasks.gen-pca-tasks.outputs.parameters.result}}"
+
+      # 2. Statistics (per model × pair × timeframe)
+      - name: statistics
+        depends: pca
+        template: statistics-step
+        arguments:
+          parameters:
+          - name: dataset
+            value: "{{item}}"
+        withParam: "{{tasks.gen-pca-tasks.outputs.parameters.result}}"
+
+      # 3. Verify ClickHouse connectivity and OHLCV data presence
+      - name: verify-clickhouse
+        depends: statistics
+        template: verify-clickhouse-step
+
+  # --- Gen PCA tasks ---
+  - name: gen-pca-tasks-template
+    script:
+      image: python:3.11-slim
+      command: [python]
+      env:
+      - name: TIMEFRAMES
+        value: "{{workflow.parameters.timeframes}}"
+      - name: PAIRS
+        value: "{{workflow.parameters.pairs}}"
+      source: |
+        import json
+        import os
+        timeframes = json.loads(os.environ.get("TIMEFRAMES", '["H1", "H4"]'))
+        pairs = json.loads(os.environ.get("PAIRS", '["USD_JPY"]'))
+        model_types = ["pair_clusters", "daily_if", "hourly_if", "arima"]
+        pair_to_code = {"EUR_USD": "EURUSD", "GBP_USD": "GBPUSD", "USD_JPY": "USDJPY"}
+        pca_datasets = []
+        for model in model_types:
+            for p in pairs:
+                code = pair_to_code.get(p, p.replace("_", ""))
+                for tf in timeframes:
+                    pca_datasets.append(f"{model}_{code}_{tf}")
+        with open("/tmp/result", "w") as f:
+            json.dump(pca_datasets, f)
+    outputs:
+      parameters:
+      - name: result
+        valueFrom:
+          path: /tmp/result
+
+  # --- Step 1: PCA ---
+  - name: pca-step
+    inputs:
+      parameters:
+      - name: dataset
+    retryStrategy:
+      limit: 2
+      retryPolicy: "OnFailure"
+      backoff:
+        duration: "1m"
+        factor: 2
+        maxDuration: "10m"
+    activeDeadlineSeconds: 7200
+    container:
+      image: registry.digitalocean.com/ams3-digitalocean-cervid-registry/market-session-data-processing:latest
+      imagePullPolicy: Always
+      command: [python, -m, data_processing.pca]
+      env:
+      - name: GIT_PYTHON_REFRESH
+        value: "quiet"
+      - name: DATASET_ID
+        value: "{{inputs.parameters.dataset}}"
+      - name: WORKSPACE_DIR
+        value: /workspace
+      - name: MLFLOW_TRACKING_URI
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: MLFLOW_TRACKING_URI
+      - name: MLFLOW_EXPERIMENT
+        value: "market-session-volume-{{workflow.name}}"
+      - name: CLICKHOUSE_HOST
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: CLICKHOUSE_HOST
+      - name: CLICKHOUSE_PORT
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: CLICKHOUSE_PORT
+      - name: CLICKHOUSE_SECURE
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: CLICKHOUSE_SECURE
+      - name: CLICKHOUSE_USERNAME
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: CLICKHOUSE_USERNAME
+      - name: CLICKHOUSE_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: CLICKHOUSE_PASSWORD
+      - name: CLICKHOUSE_DATABASE
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: CLICKHOUSE_DATABASE
+      - name: OHLCV_TABLE
+        value: "ohlcv_data"
+      - name: LOG_LEVEL
+        value: "INFO"
+      - name: AWS_ACCESS_KEY_ID
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: DO_S3_SPACES_ACCESS_ID
+      - name: AWS_SECRET_ACCESS_KEY
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: DO_S3_SPACES_SECRET_KEY
+      - name: MLFLOW_S3_ENDPOINT_URL
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: DO_S3_SPACES_URL
+      resources:
+        requests:
+          memory: 3584Mi
+          cpu: 875m
+        limits:
+          memory: 4Gi
+          cpu: 2000m
+      volumeMounts:
+      - name: workspace
+        mountPath: /workspace
+
+  # --- Step 2: Statistics ---
+  - name: statistics-step
+    inputs:
+      parameters:
+      - name: dataset
+    retryStrategy:
+      limit: 2
+      retryPolicy: "OnFailure"
+      backoff:
+        duration: "1m"
+        factor: 2
+        maxDuration: "10m"
+    activeDeadlineSeconds: 3600
+    container:
+      image: registry.digitalocean.com/ams3-digitalocean-cervid-registry/market-session-data-processing:latest
+      imagePullPolicy: Always
+      command: [python, -m, data_processing.statistics]
+      env:
+      - name: GIT_PYTHON_REFRESH
+        value: "quiet"
+      - name: DATASET_ID
+        value: "{{inputs.parameters.dataset}}"
+      - name: WORKSPACE_DIR
+        value: /workspace
+      - name: MLFLOW_TRACKING_URI
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: MLFLOW_TRACKING_URI
+      - name: MLFLOW_EXPERIMENT
+        value: "market-session-volume-{{workflow.name}}"
+      - name: LOG_LEVEL
+        value: "INFO"
+      - name: AWS_ACCESS_KEY_ID
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: DO_S3_SPACES_ACCESS_ID
+      - name: AWS_SECRET_ACCESS_KEY
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: DO_S3_SPACES_SECRET_KEY
+      - name: MLFLOW_S3_ENDPOINT_URL
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: DO_S3_SPACES_URL
+      resources:
+        requests:
+          memory: 3584Mi
+          cpu: 875m
+        limits:
+          memory: 4Gi
+          cpu: 2000m
+      volumeMounts:
+      - name: workspace
+        mountPath: /workspace
+
+  # --- Step 3: Verify ClickHouse connectivity and OHLCV data ---
+  - name: verify-clickhouse-step
+    script:
+      image: python:3.11-slim
+      command: [python]
+      env:
+      - name: CLICKHOUSE_HOST
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: CLICKHOUSE_HOST
+      - name: CLICKHOUSE_PORT
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: CLICKHOUSE_PORT
+      - name: CLICKHOUSE_SECURE
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: CLICKHOUSE_SECURE
+      - name: CLICKHOUSE_USERNAME
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: CLICKHOUSE_USERNAME
+      - name: CLICKHOUSE_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: CLICKHOUSE_PASSWORD
+      - name: CLICKHOUSE_DATABASE
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: CLICKHOUSE_DATABASE
+      - name: OHLCV_TABLE
+        value: "ohlcv_data"
+      - name: PAIRS
+        value: "{{workflow.parameters.pairs}}"
+      - name: TIMEFRAMES
+        value: "{{workflow.parameters.timeframes}}"
+      source: |
+        import json
+        import os
+        import subprocess
+        import sys
+
+        subprocess.check_call([sys.executable, "-m", "pip", "install", "clickhouse-connect", "-q"])
+        import clickhouse_connect
+
+        host     = os.environ["CLICKHOUSE_HOST"]
+        port     = int(os.environ["CLICKHOUSE_PORT"])
+        username = os.environ["CLICKHOUSE_USERNAME"]
+        password = os.environ["CLICKHOUSE_PASSWORD"]
+        database = os.environ["CLICKHOUSE_DATABASE"]
+        secure   = os.environ.get("CLICKHOUSE_SECURE", "").lower() in ("1", "true", "yes")
+        table    = os.environ.get("OHLCV_TABLE", "ohlcv_data")
+        pairs      = json.loads(os.environ.get("PAIRS",      '["USD_JPY"]'))
+        timeframes = json.loads(os.environ.get("TIMEFRAMES", '["H1", "H4"]'))
+
+        print(f"Connecting to {host}:{port} db={database} secure={secure}")
+        client = clickhouse_connect.get_client(
+            host=host, port=port, username=username,
+            password=password, database=database, secure=secure,
+        )
+        print(f"Connected. ClickHouse version: {client.server_version}")
+        print()
+
+        failed = False
+        for pair in pairs:
+            for tf in timeframes:
+                result = client.query(
+                    f"SELECT count() FROM {table} WHERE symbol = '{pair}' AND timeframe = '{tf}'"
+                )
+                count = result.result_rows[0][0]
+                ok = count > 0
+                status = "[PASS]" if ok else "[FAIL]"
+                print(f"  {status} {pair}/{tf}: {count} rows in {database}.{table}")
+                if not ok:
+                    failed = True
+
+        print()
+        if failed:
+            print("FAIL: one or more pair/timeframe combos returned 0 rows — check OHLCV data load")
+            sys.exit(1)
+        print("PASS: ClickHouse readable, OHLCV data present for all pairs/timeframes")
+      resources:
+        requests:
+          memory: 256Mi
+          cpu: 100m
+        limits:
+          memory: 512Mi
+          cpu: 500m
+
+  volumeClaimTemplates:
+  - metadata:
+      name: workspace
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: do-block-storage
+      resources:
+        requests:
+          storage: 5Gi

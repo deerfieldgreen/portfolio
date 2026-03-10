@@ -1,0 +1,325 @@
+# Market Regime Detection Argo Workflow
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: market-regime-detection
+  namespace: argo-workflows
+spec:
+  serviceAccountName: argo-workflow-executor
+  imagePullSecrets:
+  - name: ams3-digitalocean-cervid-registry
+  # GPU pool used for higher CPU capacity; pipeline is CPU-only (HMM/GARCH)
+  nodeSelector:
+    doks.digitalocean.com/node-pool: ams3-digitalocean-cervid-amd-compute
+  tolerations:
+  - key: nvidia.com/gpu
+    operator: Exists
+    effect: NoSchedule
+  entrypoint: main
+
+  templates:
+  # Main DAG: setup-tables first, then all pair+timeframe chains run in parallel.
+  # Each chain has its own ReadWriteOnce PVC so pods don't block each other.
+  - name: main
+    dag:
+      tasks:
+      - name: setup-tables
+        template: setup-tables
+      # --- USD_JPY H1 chain (process → enrich → train) ---
+      - name: process-usdjpy-h1
+        depends: setup-tables
+        template: process-step
+        arguments:
+          parameters:
+          - { name: pair, value: "USD_JPY" }
+          - { name: timeframe, value: "H1" }
+          - { name: volume, value: "workspace-usdjpy-h1" }
+      - name: enrich-usdjpy-h1
+        depends: process-usdjpy-h1
+        template: enrich-step
+        arguments:
+          parameters:
+          - { name: pair, value: "USD_JPY" }
+          - { name: timeframe, value: "H1" }
+          - { name: volume, value: "workspace-usdjpy-h1" }
+      - name: train-usdjpy-h1
+        depends: enrich-usdjpy-h1
+        template: train-step
+        arguments:
+          parameters:
+          - { name: pair, value: "USD_JPY" }
+          - { name: timeframe, value: "H1" }
+          - { name: volume, value: "workspace-usdjpy-h1" }
+      # --- USD_JPY H4 chain (process → enrich → train) ---
+      - name: process-usdjpy-h4
+        depends: setup-tables
+        template: process-step
+        arguments:
+          parameters:
+          - { name: pair, value: "USD_JPY" }
+          - { name: timeframe, value: "H4" }
+          - { name: volume, value: "workspace-usdjpy-h4" }
+      - name: enrich-usdjpy-h4
+        depends: process-usdjpy-h4
+        template: enrich-step
+        arguments:
+          parameters:
+          - { name: pair, value: "USD_JPY" }
+          - { name: timeframe, value: "H4" }
+          - { name: volume, value: "workspace-usdjpy-h4" }
+      - name: train-usdjpy-h4
+        depends: enrich-usdjpy-h4
+        template: train-step
+        arguments:
+          parameters:
+          - { name: pair, value: "USD_JPY" }
+          - { name: timeframe, value: "H4" }
+          - { name: volume, value: "workspace-usdjpy-h4" }
+      # --- EUR_USD H1 chain (process → enrich → train) ---
+      - name: process-eurusd-h1
+        depends: setup-tables
+        template: process-step
+        arguments:
+          parameters:
+          - { name: pair, value: "EUR_USD" }
+          - { name: timeframe, value: "H1" }
+          - { name: volume, value: "workspace-eurusd-h1" }
+      - name: enrich-eurusd-h1
+        depends: process-eurusd-h1
+        template: enrich-step
+        arguments:
+          parameters:
+          - { name: pair, value: "EUR_USD" }
+          - { name: timeframe, value: "H1" }
+          - { name: volume, value: "workspace-eurusd-h1" }
+      - name: train-eurusd-h1
+        depends: enrich-eurusd-h1
+        template: train-step
+        arguments:
+          parameters:
+          - { name: pair, value: "EUR_USD" }
+          - { name: timeframe, value: "H1" }
+          - { name: volume, value: "workspace-eurusd-h1" }
+      # --- EUR_USD H4 chain (process → enrich → train) ---
+      - name: process-eurusd-h4
+        depends: setup-tables
+        template: process-step
+        arguments:
+          parameters:
+          - { name: pair, value: "EUR_USD" }
+          - { name: timeframe, value: "H4" }
+          - { name: volume, value: "workspace-eurusd-h4" }
+      - name: enrich-eurusd-h4
+        depends: process-eurusd-h4
+        template: enrich-step
+        arguments:
+          parameters:
+          - { name: pair, value: "EUR_USD" }
+          - { name: timeframe, value: "H4" }
+          - { name: volume, value: "workspace-eurusd-h4" }
+      - name: train-eurusd-h4
+        depends: enrich-eurusd-h4
+        template: train-step
+        arguments:
+          parameters:
+          - { name: pair, value: "EUR_USD" }
+          - { name: timeframe, value: "H4" }
+          - { name: volume, value: "workspace-eurusd-h4" }
+
+  # Step 1: Create ClickHouse tables (idempotent; uses IF NOT EXISTS)
+  - name: setup-tables
+    container:
+      image: registry.digitalocean.com/ams3-digitalocean-cervid-registry/market-regime-data-processing:latest
+      command: [python, setup_tables.py]
+      env:
+      - name: CLICKHOUSE_HOST
+        valueFrom:
+          secretKeyRef:
+            name: market-regime-detection-secrets
+            key: CLICKHOUSE_HOST
+      - name: CLICKHOUSE_PORT
+        valueFrom:
+          secretKeyRef:
+            name: market-regime-detection-secrets
+            key: CLICKHOUSE_PORT
+      - name: CLICKHOUSE_USERNAME
+        valueFrom:
+          secretKeyRef:
+            name: market-regime-detection-secrets
+            key: CLICKHOUSE_USERNAME
+      - name: CLICKHOUSE_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: market-regime-detection-secrets
+            key: CLICKHOUSE_PASSWORD
+      - name: CLICKHOUSE_DATABASE
+        valueFrom:
+          secretKeyRef:
+            name: market-regime-detection-secrets
+            key: CLICKHOUSE_DATABASE
+      - name: CLICKHOUSE_SECURE
+        value: "true"
+      resources:
+        requests:
+          memory: 256Mi
+          cpu: 250m
+        limits:
+          memory: 512Mi
+          cpu: 500m
+
+  # Step 2: Process data
+  - name: process-step
+    inputs:
+      parameters:
+      - name: pair
+      - name: timeframe
+      - name: volume
+    container:
+      image: registry.digitalocean.com/ams3-digitalocean-cervid-registry/market-regime-data-processing:latest
+      command: [python, process_data.py]
+      env:
+      - name: PAIR
+        value: "{{inputs.parameters.pair}}"
+      - name: TIMEFRAME
+        value: "{{inputs.parameters.timeframe}}"
+      - name: OUTPUT_PATH
+        value: /workspace/{{inputs.parameters.pair}}_{{inputs.parameters.timeframe}}.csv
+      - name: DAYS_LOOK_BACK
+        valueFrom:
+          secretKeyRef:
+            name: market-regime-detection-secrets
+            key: DAYS_LOOK_BACK
+      - name: FRED_API_KEY
+        valueFrom:
+          secretKeyRef:
+            name: market-regime-detection-secrets
+            key: FRED_API_KEY
+      - name: OANDA_API_KEY
+        valueFrom:
+          secretKeyRef:
+            name: market-regime-detection-secrets
+            key: OANDA_API_KEY
+      resources:
+        requests:
+          memory: 1Gi
+          cpu: 500m
+        limits:
+          memory: 2Gi
+          cpu: 1000m
+      volumeMounts:
+      - name: "{{inputs.parameters.volume}}"
+        mountPath: /workspace
+
+  # Step 2b: Enrich (z-score, PCA, SMA/EMA, skew/kurtosis) — data_processing image
+  - name: enrich-step
+    inputs:
+      parameters:
+      - name: pair
+      - name: timeframe
+      - name: volume
+    container:
+      image: registry.digitalocean.com/ams3-digitalocean-cervid-registry/market-regime-data-processing:latest
+      command: [python, enrich_data.py]
+      env:
+      - name: INPUT_PATH
+        value: /workspace/{{inputs.parameters.pair}}_{{inputs.parameters.timeframe}}.csv
+      - name: OUTPUT_PATH
+        value: /workspace/enriched_{{inputs.parameters.pair}}_{{inputs.parameters.timeframe}}.csv
+      resources:
+        requests:
+          memory: 512Mi
+          cpu: 250m
+        limits:
+          memory: 1Gi
+          cpu: 500m
+      volumeMounts:
+      - name: "{{inputs.parameters.volume}}"
+        mountPath: /workspace
+
+  # Step 3: Train model and log
+  - name: train-step
+    inputs:
+      parameters:
+      - name: pair
+      - name: timeframe
+      - name: volume
+    container:
+      image: registry.digitalocean.com/ams3-digitalocean-cervid-registry/market-regime-modeling:latest
+      command: [python, train_model.py]
+      env:
+      - name: INPUT_PATH
+        value: /workspace/enriched_{{inputs.parameters.pair}}_{{inputs.parameters.timeframe}}.csv
+      - name: OUTPUT_PATH
+        value: /workspace/results_{{inputs.parameters.pair}}_{{inputs.parameters.timeframe}}.csv
+      - name: CLICKHOUSE_HOST
+        valueFrom:
+          secretKeyRef:
+            name: market-regime-detection-secrets
+            key: CLICKHOUSE_HOST
+      - name: CLICKHOUSE_PORT
+        valueFrom:
+          secretKeyRef:
+            name: market-regime-detection-secrets
+            key: CLICKHOUSE_PORT
+      - name: CLICKHOUSE_USERNAME
+        valueFrom:
+          secretKeyRef:
+            name: market-regime-detection-secrets
+            key: CLICKHOUSE_USERNAME
+      - name: CLICKHOUSE_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: market-regime-detection-secrets
+            key: CLICKHOUSE_PASSWORD
+      - name: CLICKHOUSE_DATABASE
+        valueFrom:
+          secretKeyRef:
+            name: market-regime-detection-secrets
+            key: CLICKHOUSE_DATABASE
+      - name: CLICKHOUSE_SECURE
+        value: "true"
+      resources:
+        requests:
+          memory: 2Gi
+          cpu: 1000m
+        limits:
+          memory: 4Gi
+          cpu: 2000m
+      volumeMounts:
+      - name: "{{inputs.parameters.volume}}"
+        mountPath: /workspace
+
+  # Separate PVCs per pair+timeframe chain — ReadWriteOnce requires one PVC per parallel branch
+  volumeClaimTemplates:
+  - metadata:
+      name: workspace-usdjpy-h1
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: do-block-storage
+      resources:
+        requests:
+          storage: 5Gi
+  - metadata:
+      name: workspace-usdjpy-h4
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: do-block-storage
+      resources:
+        requests:
+          storage: 5Gi
+  - metadata:
+      name: workspace-eurusd-h1
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: do-block-storage
+      resources:
+        requests:
+          storage: 5Gi
+  - metadata:
+      name: workspace-eurusd-h4
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: do-block-storage
+      resources:
+        requests:
+          storage: 5Gi

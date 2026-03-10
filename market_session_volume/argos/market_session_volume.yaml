@@ -1,0 +1,766 @@
+# Market session volume pipeline: PCA → statistics → train/tune → collect → select and register
+# Steps 1, 2, 4: same image (market-session-data-processing), different module entrypoints.
+# Steps 3, 3b: market-session-train (train_single per task, collect merges). Secrets from argo-market-sessions (Doppler).
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: market-session-volume-pipeline
+  namespace: argo-workflows
+spec:
+  serviceAccountName: argo-workflow-executor
+  imagePullSecrets:
+  - name: ams3-digitalocean-cervid-registry
+  # GPU pool used for higher CPU capacity; pipeline is CPU-only (KMeans/ARIMA)
+  nodeSelector:
+    doks.digitalocean.com/node-pool: ams3-digitalocean-cervid-gpu-pool
+  tolerations:
+  - key: nvidia.com/gpu
+    operator: Exists
+    effect: NoSchedule
+  entrypoint: main
+  # Target ~90% node utilization: allocatable 7880m CPU, 28.8Gi; baseline ~3622m, 11Gi. Pipeline headroom ~3500m CPU, 15Gi.
+  # parallelism=6 with ~875m/3.5Gi per pod yields 6×875=5250m CPU, 6×3.5=21Gi when 6 concurrent (may exceed headroom; monitor).
+  parallelism: 6
+
+  arguments:
+    parameters:
+    - name: timeframes
+      value: '["H1", "H4"]'
+    - name: pairs
+      value: '["USD_JPY"]'
+    - name: days_look_back
+      value: "50"
+
+  templates:
+  # --- DAG: 0. Setup tables → 1. PCA (parallel by model+pair+timeframe) → 2. Statistics → 3. Train/tune → 4. Select and register ---
+  - name: main
+    dag:
+      tasks:
+      # 0. Create ClickHouse tables (idempotent; uses IF NOT EXISTS)
+      - name: setup-tables
+        template: setup-tables-step
+
+      # 1a. Generate PCA task list (model × pair × timeframe)
+      - name: gen-pca-tasks
+        template: gen-pca-tasks-template
+
+      # 1b. PCA (highly parallel: one task per model × pair × timeframe)
+      - name: pca
+        depends: "gen-pca-tasks && setup-tables"
+        template: pca-step
+        arguments:
+          parameters:
+          - name: dataset
+            value: "{{item}}"
+        withParam: "{{tasks.gen-pca-tasks.outputs.parameters.result}}"
+
+      # 2. Statistics (per model × pair × timeframe)
+      - name: statistics
+        depends: pca
+        template: statistics-step
+        arguments:
+          parameters:
+          - name: dataset
+            value: "{{item}}"
+        withParam: "{{tasks.gen-pca-tasks.outputs.parameters.result}}"
+
+      # 2a. Generate pair-clusters global task list (one per timeframe)
+      - name: gen-pair-clusters-tasks
+        template: gen-pair-clusters-tasks-template
+
+      # 2b. Global pair clusters (one KMeans fit per timeframe; writes pair_clusters_{tf}.json)
+      - name: pair-clusters-global
+        depends: "gen-pair-clusters-tasks && setup-tables"
+        template: pair-clusters-global-step
+        arguments:
+          parameters:
+          - name: timeframe
+            value: "{{item.timeframe}}"
+        withParam: "{{tasks.gen-pair-clusters-tasks.outputs.parameters.result}}"
+
+      # 2c. Generate train task list (daily_if, hourly_if, arima only; no pair_clusters)
+      - name: gen-train-tasks
+        template: gen-train-tasks-template
+
+      # 2d. Generate collect configs (one per pair+timeframe for aligned semantics)
+      - name: gen-collect-configs
+        template: gen-collect-configs-template
+
+      # 3. Train / tune (parallel: model+pair+timeframe per task)
+      - name: train
+        depends: "gen-train-tasks && statistics"
+        template: train-single-step
+        arguments:
+          parameters:
+          - name: model_type
+            value: "{{item.model_type}}"
+          - name: pair
+            value: "{{item.pair}}"
+          - name: dataset
+            value: "{{item.dataset}}"
+          - name: hour
+            value: "{{item.hour}}"
+        withParam: "{{tasks.gen-train-tasks.outputs.parameters.result}}"
+
+      # 4. Collect partial results and persist to ClickHouse (one per pair+timeframe)
+      - name: collect
+        depends: "train && gen-collect-configs && pair-clusters-global"
+        template: collect-step
+        arguments:
+          parameters:
+          - name: dataset_id
+            value: "{{item.dataset_id}}"
+          - name: pair
+            value: "{{item.pair}}"
+        withParam: "{{tasks.gen-collect-configs.outputs.parameters.result}}"
+
+      # 5. Select best model and register to MLflow (single step after all trains)
+      - name: select-and-register
+        depends: collect
+        template: select-register-step
+
+  # --- Step 0: Create ClickHouse tables (idempotent) ---
+  - name: setup-tables-step
+    retryStrategy:
+      limit: 2
+      retryPolicy: "OnFailure"
+      backoff:
+        duration: "30s"
+        factor: 2
+        maxDuration: "5m"
+    activeDeadlineSeconds: 300
+    container:
+      image: registry.digitalocean.com/ams3-digitalocean-cervid-registry/market-session-data-processing:latest
+      imagePullPolicy: Always
+      command: [python, -m, data_processing.setup_tables]
+      env:
+      - name: CLICKHOUSE_HOST
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: CLICKHOUSE_HOST
+      - name: CLICKHOUSE_PORT
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: CLICKHOUSE_PORT
+      - name: CLICKHOUSE_SECURE
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: CLICKHOUSE_SECURE
+      - name: CLICKHOUSE_USERNAME
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: CLICKHOUSE_USERNAME
+      - name: CLICKHOUSE_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: CLICKHOUSE_PASSWORD
+      - name: CLICKHOUSE_DATABASE
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: CLICKHOUSE_DATABASE
+      resources:
+        requests:
+          memory: 256Mi
+          cpu: 250m
+        limits:
+          memory: 512Mi
+          cpu: 500m
+
+  # --- Step 1: PCA (data_processing container) ---
+  - name: pca-step
+    inputs:
+      parameters:
+      - name: dataset
+    retryStrategy:
+      limit: 2
+      retryPolicy: "OnFailure"
+      backoff:
+        duration: "1m"
+        factor: 2
+        maxDuration: "10m"
+    activeDeadlineSeconds: 7200  # 2 hour timeout
+    container:
+      image: registry.digitalocean.com/ams3-digitalocean-cervid-registry/market-session-data-processing:latest
+      imagePullPolicy: Always
+      command: [python, -m, data_processing.pca]
+      env:
+      - name: GIT_PYTHON_REFRESH
+        value: "quiet"
+      - name: DATASET_ID
+        value: "{{inputs.parameters.dataset}}"
+      - name: WORKSPACE_DIR
+        value: /workspace
+      - name: MLFLOW_TRACKING_URI
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: MLFLOW_TRACKING_URI
+      - name: MLFLOW_EXPERIMENT
+        value: "market-session-volume-{{workflow.name}}"
+      - name: CLICKHOUSE_HOST
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: CLICKHOUSE_HOST
+      - name: CLICKHOUSE_PORT
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: CLICKHOUSE_PORT
+      - name: CLICKHOUSE_SECURE
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: CLICKHOUSE_SECURE
+      - name: CLICKHOUSE_USERNAME
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: CLICKHOUSE_USERNAME
+      - name: CLICKHOUSE_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: CLICKHOUSE_PASSWORD
+      - name: CLICKHOUSE_DATABASE
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: CLICKHOUSE_DATABASE
+      - name: OHLCV_TABLE
+        value: "ohlcv_data"
+      - name: LOG_LEVEL
+        value: "INFO"
+      - name: AWS_ACCESS_KEY_ID
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: DO_S3_SPACES_ACCESS_ID
+      - name: AWS_SECRET_ACCESS_KEY
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: DO_S3_SPACES_SECRET_KEY
+      - name: MLFLOW_S3_ENDPOINT_URL
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: DO_S3_SPACES_URL
+      resources:
+        requests:
+          memory: 3584Mi
+          cpu: 875m
+        limits:
+          memory: 4Gi
+          cpu: 2000m
+      volumeMounts:
+      - name: workspace
+        mountPath: /workspace
+
+  # --- Gen PCA tasks: expands to (model × pair × timeframe) for parallel PCA ---
+  - name: gen-pca-tasks-template
+    script:
+      image: python:3.11-slim
+      command: [python]
+      env:
+      - name: TIMEFRAMES
+        value: "{{workflow.parameters.timeframes}}"
+      - name: PAIRS
+        value: "{{workflow.parameters.pairs}}"
+      source: |
+        import json
+        import os
+        timeframes = json.loads(os.environ.get("TIMEFRAMES", '["H1", "H4"]'))
+        pairs = json.loads(os.environ.get("PAIRS", '["USD_JPY"]'))
+        model_types = ["pair_clusters", "daily_if", "hourly_if", "arima"]
+        pair_to_code = {"EUR_USD": "EURUSD", "GBP_USD": "GBPUSD", "USD_JPY": "USDJPY"}
+        pca_datasets = []
+        for model in model_types:
+            for p in pairs:
+                code = pair_to_code.get(p, p.replace("_", ""))
+                for tf in timeframes:
+                    pca_datasets.append(f"{model}_{code}_{tf}")
+        with open("/tmp/result", "w") as f:
+            json.dump(pca_datasets, f)
+    outputs:
+      parameters:
+      - name: result
+        valueFrom:
+          path: /tmp/result
+
+  # --- Gen pair-clusters global tasks: one task per timeframe (H1, H4, ...) ---
+  - name: gen-pair-clusters-tasks-template
+    script:
+      image: python:3.11-slim
+      command: [python]
+      env:
+      - name: TIMEFRAMES
+        value: "{{workflow.parameters.timeframes}}"
+      source: |
+        import json
+        import os
+        timeframes = json.loads(os.environ.get("TIMEFRAMES", '["H1", "H4"]'))
+        result = [{"timeframe": tf} for tf in timeframes]
+        with open("/tmp/result", "w") as f:
+            json.dump(result, f)
+    outputs:
+      parameters:
+      - name: result
+        valueFrom:
+          path: /tmp/result
+
+  # --- Global pair clusters: one KMeans fit per timeframe, write pair_clusters_{tf}.json ---
+  - name: pair-clusters-global-step
+    inputs:
+      parameters:
+      - name: timeframe
+    retryStrategy:
+      limit: 2
+      retryPolicy: "OnFailure"
+      backoff:
+        duration: "1m"
+        factor: 2
+        maxDuration: "10m"
+    activeDeadlineSeconds: 3600
+    container:
+      image: registry.digitalocean.com/ams3-digitalocean-cervid-registry/market-session-train:latest
+      imagePullPolicy: Always
+      command: [python, -m, train_tune.run_pair_clusters_global]
+      env:
+      - name: GIT_PYTHON_REFRESH
+        value: "quiet"
+      - name: TIMEFRAME
+        value: "{{inputs.parameters.timeframe}}"
+      - name: DAYS_LOOK_BACK
+        value: "{{workflow.parameters.days_look_back}}"
+      - name: WORKSPACE_DIR
+        value: /workspace
+      - name: CLICKHOUSE_HOST
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: CLICKHOUSE_HOST
+      - name: CLICKHOUSE_PORT
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: CLICKHOUSE_PORT
+      - name: CLICKHOUSE_SECURE
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: CLICKHOUSE_SECURE
+      - name: CLICKHOUSE_USERNAME
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: CLICKHOUSE_USERNAME
+      - name: CLICKHOUSE_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: CLICKHOUSE_PASSWORD
+      - name: CLICKHOUSE_DATABASE
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: CLICKHOUSE_DATABASE
+      - name: LOG_LEVEL
+        value: "INFO"
+      resources:
+        requests:
+          memory: 3584Mi
+          cpu: 875m
+        limits:
+          memory: 4Gi
+          cpu: 2000m
+      volumeMounts:
+      - name: workspace
+        mountPath: /workspace
+
+  # --- Step 2: Statistics (data_processing container) ---
+  - name: statistics-step
+    inputs:
+      parameters:
+      - name: dataset
+    retryStrategy:
+      limit: 2
+      retryPolicy: "OnFailure"
+      backoff:
+        duration: "1m"
+        factor: 2
+        maxDuration: "10m"
+    activeDeadlineSeconds: 3600  # 1 hour timeout
+    container:
+      image: registry.digitalocean.com/ams3-digitalocean-cervid-registry/market-session-data-processing:latest
+      imagePullPolicy: Always
+      command: [python, -m, data_processing.statistics]
+      env:
+      - name: GIT_PYTHON_REFRESH
+        value: "quiet"
+      - name: DATASET_ID
+        value: "{{inputs.parameters.dataset}}"
+      - name: WORKSPACE_DIR
+        value: /workspace
+      - name: MLFLOW_TRACKING_URI
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: MLFLOW_TRACKING_URI
+      - name: MLFLOW_EXPERIMENT
+        value: "market-session-volume-{{workflow.name}}"
+      - name: LOG_LEVEL
+        value: "INFO"
+      - name: AWS_ACCESS_KEY_ID
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: DO_S3_SPACES_ACCESS_ID
+      - name: AWS_SECRET_ACCESS_KEY
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: DO_S3_SPACES_SECRET_KEY
+      - name: MLFLOW_S3_ENDPOINT_URL
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: DO_S3_SPACES_URL
+      resources:
+        requests:
+          memory: 3584Mi
+          cpu: 875m
+        limits:
+          memory: 4Gi
+          cpu: 2000m
+      volumeMounts:
+      - name: workspace
+        mountPath: /workspace
+
+  # --- Gen collect configs: one config per (pair, timeframe) for aligned dataset_id ---
+  - name: gen-collect-configs-template
+    script:
+      image: python:3.11-slim
+      command: [python]
+      env:
+      - name: TIMEFRAMES
+        value: "{{workflow.parameters.timeframes}}"
+      - name: PAIRS
+        value: "{{workflow.parameters.pairs}}"
+      source: |
+        import json
+        import os
+        timeframes = json.loads(os.environ.get("TIMEFRAMES", '["H1", "H4"]'))
+        pairs = json.loads(os.environ.get("PAIRS", '["USD_JPY"]'))
+        pair_to_code = {"USD_JPY": "USDJPY"}
+        configs = []
+        for p in pairs:
+            code = pair_to_code.get(p, p.replace("_", ""))
+            for tf in timeframes:
+                configs.append({"dataset_id": f"{code}_{tf}", "pair": p})
+        with open("/tmp/result", "w") as f:
+            json.dump(configs, f)
+    outputs:
+      parameters:
+      - name: result
+        valueFrom:
+          path: /tmp/result
+
+  # --- Gen train tasks: emits JSON array for withParam; dataset_id = pair_timeframe (aligned) ---
+  - name: gen-train-tasks-template
+    script:
+      image: python:3.11-slim
+      command: [python]
+      env:
+      - name: TIMEFRAMES
+        value: "{{workflow.parameters.timeframes}}"
+      - name: PAIRS
+        value: "{{workflow.parameters.pairs}}"
+      source: |
+        import json
+        import os
+        timeframes = json.loads(os.environ.get("TIMEFRAMES", '["H1", "H4"]'))
+        pairs = json.loads(os.environ.get("PAIRS", '["USD_JPY"]'))
+        pair_to_code = {"USD_JPY": "USDJPY"}
+        tasks = []
+        for p in pairs:
+            code = pair_to_code.get(p, p.replace("_", ""))
+            for tf in timeframes:
+                dataset_id = f"{code}_{tf}"
+                tasks.append({"model_type": "daily_if", "pair": p, "dataset": dataset_id, "hour": ""})
+                for h in range(24):
+                    tasks.append({"model_type": "hourly_if", "pair": p, "dataset": dataset_id, "hour": str(h)})
+                    tasks.append({"model_type": "arima", "pair": p, "dataset": dataset_id, "hour": str(h)})
+        with open("/tmp/result", "w") as f:
+            json.dump(tasks, f)
+    outputs:
+      parameters:
+      - name: result
+        valueFrom:
+          path: /tmp/result
+
+  # --- Step 3: Train / tune (single task per model+pair+timeframe[+hour]) ---
+  - name: train-single-step
+    inputs:
+      parameters:
+      - name: model_type
+      - name: pair
+      - name: dataset
+      - name: hour
+    retryStrategy:
+      limit: 2
+      retryPolicy: "OnFailure"
+      backoff:
+        duration: "1m"
+        factor: 2
+        maxDuration: "10m"
+    activeDeadlineSeconds: 7200  # 2 hour timeout
+    container:
+      image: registry.digitalocean.com/ams3-digitalocean-cervid-registry/market-session-train:latest
+      imagePullPolicy: Always
+      command: [python, -m, train_tune.train_single]
+      env:
+      - name: GIT_PYTHON_REFRESH
+        value: "quiet"
+      - name: MODEL_TYPE
+        value: "{{inputs.parameters.model_type}}"
+      - name: PAIR
+        value: "{{inputs.parameters.pair}}"
+      - name: DATASET_ID
+        value: "{{inputs.parameters.dataset}}"
+      - name: HOUR
+        value: "{{inputs.parameters.hour}}"
+      - name: DAYS_LOOK_BACK
+        value: "{{workflow.parameters.days_look_back}}"
+      - name: WORKSPACE_DIR
+        value: /workspace
+      - name: MLFLOW_TRACKING_URI
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: MLFLOW_TRACKING_URI
+      - name: MLFLOW_EXPERIMENT
+        value: "market-session-volume-{{workflow.name}}"
+      - name: CLICKHOUSE_HOST
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: CLICKHOUSE_HOST
+      - name: CLICKHOUSE_PORT
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: CLICKHOUSE_PORT
+      - name: CLICKHOUSE_SECURE
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: CLICKHOUSE_SECURE
+      - name: CLICKHOUSE_USERNAME
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: CLICKHOUSE_USERNAME
+      - name: CLICKHOUSE_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: CLICKHOUSE_PASSWORD
+      - name: CLICKHOUSE_DATABASE
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: CLICKHOUSE_DATABASE
+      - name: LOG_LEVEL
+        value: "INFO"
+      - name: AWS_ACCESS_KEY_ID
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: DO_S3_SPACES_ACCESS_ID
+      - name: AWS_SECRET_ACCESS_KEY
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: DO_S3_SPACES_SECRET_KEY
+      - name: MLFLOW_S3_ENDPOINT_URL
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: DO_S3_SPACES_URL
+      resources:
+        requests:
+          memory: 3584Mi
+          cpu: 875m
+        limits:
+          memory: 8Gi
+          cpu: 4000m
+      volumeMounts:
+      - name: workspace
+        mountPath: /workspace
+
+  # --- Step 3b: Collect partial results and persist to ClickHouse (one per pair+timeframe) ---
+  - name: collect-step
+    inputs:
+      parameters:
+      - name: dataset_id
+      - name: pair
+    retryStrategy:
+      limit: 2
+      retryPolicy: "OnFailure"
+      backoff:
+        duration: "1m"
+        factor: 2
+        maxDuration: "10m"
+    activeDeadlineSeconds: 1800  # 30 min
+    container:
+      image: registry.digitalocean.com/ams3-digitalocean-cervid-registry/market-session-train:latest
+      imagePullPolicy: Always
+      command: [python, -m, train_tune.collect_train_results]
+      env:
+      - name: GIT_PYTHON_REFRESH
+        value: "quiet"
+      - name: DATASET_ID
+        value: "{{inputs.parameters.dataset_id}}"
+      - name: WORKSPACE_DIR
+        value: /workspace
+      - name: PAIRS
+        value: "{{inputs.parameters.pair}}"
+      - name: DAYS_LOOK_BACK
+        value: "{{workflow.parameters.days_look_back}}"
+      - name: CLICKHOUSE_HOST
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: CLICKHOUSE_HOST
+      - name: CLICKHOUSE_PORT
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: CLICKHOUSE_PORT
+      - name: CLICKHOUSE_SECURE
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: CLICKHOUSE_SECURE
+      - name: CLICKHOUSE_USERNAME
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: CLICKHOUSE_USERNAME
+      - name: CLICKHOUSE_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: CLICKHOUSE_PASSWORD
+      - name: CLICKHOUSE_DATABASE
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: CLICKHOUSE_DATABASE
+      - name: OHLCV_TABLE
+        value: "ohlcv_data"
+      - name: LOG_LEVEL
+        value: "INFO"
+      - name: MLFLOW_TRACKING_URI
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: MLFLOW_TRACKING_URI
+      - name: MLFLOW_EXPERIMENT
+        value: "market-session-volume-{{workflow.name}}"
+      - name: AWS_ACCESS_KEY_ID
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: DO_S3_SPACES_ACCESS_ID
+      - name: AWS_SECRET_ACCESS_KEY
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: DO_S3_SPACES_SECRET_KEY
+      - name: MLFLOW_S3_ENDPOINT_URL
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: DO_S3_SPACES_URL
+      resources:
+        requests:
+          memory: 3584Mi
+          cpu: 875m
+        limits:
+          memory: 4Gi
+          cpu: 2000m
+      volumeMounts:
+      - name: workspace
+        mountPath: /workspace
+
+  # --- Step 4: Select and register (data_processing container) ---
+  - name: select-register-step
+    retryStrategy:
+      limit: 2
+      retryPolicy: "OnFailure"
+      backoff:
+        duration: "1m"
+        factor: 2
+        maxDuration: "10m"
+    activeDeadlineSeconds: 1800  # 30 minute timeout
+    container:
+      image: registry.digitalocean.com/ams3-digitalocean-cervid-registry/market-session-data-processing:latest
+      imagePullPolicy: Always
+      command: [python, -m, data_processing.select_register]
+      env:
+      - name: GIT_PYTHON_REFRESH
+        value: "quiet"
+      - name: WORKSPACE_DIR
+        value: /workspace
+      - name: MLFLOW_TRACKING_URI
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: MLFLOW_TRACKING_URI
+      - name: MLFLOW_EXPERIMENT
+        value: "market-session-volume-{{workflow.name}}"
+      - name: LOG_LEVEL
+        value: "INFO"
+      - name: AWS_ACCESS_KEY_ID
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: DO_S3_SPACES_ACCESS_ID
+      - name: AWS_SECRET_ACCESS_KEY
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: DO_S3_SPACES_SECRET_KEY
+      - name: MLFLOW_S3_ENDPOINT_URL
+        valueFrom:
+          secretKeyRef:
+            name: argo-market-sessions
+            key: DO_S3_SPACES_URL
+      resources:
+        requests:
+          memory: 2Gi
+          cpu: 1000m
+        limits:
+          memory: 4Gi
+          cpu: 2000m
+      volumeMounts:
+      - name: workspace
+        mountPath: /workspace
+
+  volumeClaimTemplates:
+  - metadata:
+      name: workspace
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: do-block-storage
+      resources:
+        requests:
+          storage: 5Gi

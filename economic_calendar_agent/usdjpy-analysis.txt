@@ -1,0 +1,2774 @@
+# Economic Calendar Analysis
+
+## 📅 Upcoming Events
+
+### JP - Leading Economic Index (Dec) (2026-02-26 05:00 UTC)
+- **Forecast**: 110.2
+- **Previous**: 109.9
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### JP - CB Leading Index (Dec) (2026-02-26 05:00 UTC)
+- **Forecast**: 110.2
+- **Previous**: 109.9
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### SG - Industrial Production MoM (Jan) (2026-02-26 05:00 UTC)
+- **Forecast**: 9
+- **Previous**: -13.3
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### JP - Coincident Index (Dec) (2026-02-26 05:00 UTC)
+- **Forecast**: 114.5
+- **Previous**: 114.9
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### JP - Leading Index MoM (Dec) (2026-02-26 05:00 UTC)
+- **Forecast**: 0.3
+- **Previous**: 0.1
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### SG - Industrial Production YoY (Jan) (2026-02-26 05:00 UTC)
+- **Forecast**: 7.5
+- **Previous**: 8.3
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### SG - 6-Month T-Bill Auction (2026-02-26 05:00 UTC)
+- **Previous**: 1.36
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### JP - Coincident Indicator MoM (Dec) (2026-02-26 05:00 UTC)
+- **Forecast**: -0.4
+- **Previous**: -1
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### FI - Producer Price Index YoY (Jan) (2026-02-26 06:00 UTC)
+- **Forecast**: -1.2
+- **Previous**: -0.8
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### FI - Business Confidence (Feb) (2026-02-26 06:00 UTC)
+- **Forecast**: -2
+- **Previous**: -1
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### FI - Export Prices YoY (Jan) (2026-02-26 06:00 UTC)
+- **Forecast**: -2.3
+- **Previous**: -2.1
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### FI - Consumer Confidence (Feb) (2026-02-26 06:00 UTC)
+- **Forecast**: -9
+- **Previous**: -8.7
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### FI - Import Prices YoY (Jan) (2026-02-26 06:00 UTC)
+- **Forecast**: -2
+- **Previous**: -1.8
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### TR - Imports (Jan) (2026-02-26 07:00 UTC)
+- **Forecast**: 28.7
+- **Previous**: 35.7
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### TR - Balance of Trade (Jan) (2026-02-26 07:00 UTC)
+- **Forecast**: -8.4
+- **Previous**: -9.3
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### TR - Exports (Jan) (2026-02-26 07:00 UTC)
+- **Forecast**: 20.3
+- **Previous**: 26.4
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### SE - Money Supply (Jan) (2026-02-26 07:00 UTC)
+- **Previous**: 4.9
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### DK - Money Supply (Jan) (2026-02-26 07:00 UTC)
+- **Previous**: 2
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### SE - Household Lending Growth YoY (Jan) (2026-02-26 07:00 UTC)
+- **Forecast**: 2.9
+- **Previous**: 2.9
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### DE - Consumer Confidence (Mar) (2026-02-26 07:00 UTC)
+- **Impact**: High, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### CH - Non Farm Payrolls (Q4) (2026-02-26 07:30 UTC)
+- **Forecast**: 5.54
+- **Previous**: 5.532
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### CH - Employment Level (Q4) (2026-02-26 07:30 UTC)
+- **Previous**: 5.532
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### ZM - CPI (Feb) (2026-02-26 08:00 UTC)
+- **Previous**: 0.5
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### SE - Manufacturing Confidence (Feb) (2026-02-26 08:00 UTC)
+- **Previous**: 103.6
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### SK - Consumer Confidence (Feb) (2026-02-26 08:00 UTC)
+- **Forecast**: -27
+- **Previous**: -26.7
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### SE - Consumer Inflation Expectation (Feb) (2026-02-26 08:00 UTC)
+- **Forecast**: 6.3
+- **Previous**: 6.5
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### SE - Economic Tendency Indicator (Feb) (2026-02-26 08:00 UTC)
+- **Forecast**: 102
+- **Previous**: 103
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### SE - Business Confidence (2026-02-26 08:00 UTC)
+- **Previous**: 106.4
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### SE - Consumer Confidence (Feb) (2026-02-26 08:00 UTC)
+- **Forecast**: 95.9
+- **Previous**: 95.3
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### SE - Business Confidence (Feb) (2026-02-26 08:00 UTC)
+- **Forecast**: 105
+- **Previous**: 106.4
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### SK - Business Confidence (Feb) (2026-02-26 08:00 UTC)
+- **Forecast**: -1
+- **Previous**: -0.3
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### TW - M2 Money Supply YoY (Jan) (2026-02-26 08:20 UTC)
+- **Previous**: 5
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### TW - Money Supply (Jan) (2026-02-26 08:20 UTC)
+- **Previous**: 5
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### TW - Current Account (Q4) (2026-02-26 08:20 UTC)
+- **Forecast**: 42
+- **Previous**: 45.84
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### EU - ECB President Lagarde Speech (2026-02-26 08:30 UTC)
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.30)
+
+
+### EU - ECB Lagarde Speech (2026-02-26 08:30 UTC)
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.30)
+
+
+### EU - Loans to Households YoY (Jan) (2026-02-26 09:00 UTC)
+- **Forecast**: 3
+- **Previous**: 3
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### EU - Loans to Companies YoY (Jan) (2026-02-26 09:00 UTC)
+- **Forecast**: 3
+- **Previous**: 3
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### IS - CPI (Feb) (2026-02-26 09:00 UTC)
+- **Previous**: 0.4
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### PL - Unemployment Rate (Jan) (2026-02-26 09:00 UTC)
+- **Forecast**: 6
+- **Previous**: 5.7
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.48)
+
+
+### IT - Consumer Confidence (Feb) (2026-02-26 09:00 UTC)
+- **Forecast**: 96.4
+- **Previous**: 96.8
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### IT - Business Confidence (Feb) (2026-02-26 09:00 UTC)
+- **Forecast**: 89.5
+- **Previous**: 89.2
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### IS - Inflation Rate MoM (Feb) (2026-02-26 09:00 UTC)
+- **Forecast**: 0.7
+- **Previous**: 0.4
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### IS - Inflation Rate YoY (Feb) (2026-02-26 09:00 UTC)
+- **Forecast**: 5
+- **Previous**: 5.2
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### EU - M3 Money Supply YoY (Jan) (2026-02-26 09:00 UTC)
+- **Forecast**: 2.8
+- **Previous**: 2.8
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### EU - Money Supply (Jan) (2026-02-26 09:00 UTC)
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### EU - Private sector loans (Jan) (2026-02-26 09:00 UTC)
+- **Forecast**: 3.1
+- **Previous**: 3
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### MO - Balance of Trade (Jan) (2026-02-26 09:00 UTC)
+- **Forecast**: -9.5
+- **Previous**: -10.6
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### CH - Economic Sentiment Index (Feb) (2026-02-26 09:00 UTC)
+- **Forecast**: 5
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### SI - Retail Sales MoM (Jan) (2026-02-26 09:30 UTC)
+- **Forecast**: -2.1
+- **Previous**: 0
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.22)
+
+
+### PT - Consumer Confidence (Feb) (2026-02-26 09:30 UTC)
+- **Forecast**: -14
+- **Previous**: -14.7
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### PT - Business Confidence (Feb) (2026-02-26 09:30 UTC)
+- **Forecast**: 2.9
+- **Previous**: 3
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### ZA - Producer Price Index YoY (Jan) (2026-02-26 09:30 UTC)
+- **Forecast**: 2.8
+- **Previous**: 2.9
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### ZA - Producer Price Index MoM (Jan) (2026-02-26 09:30 UTC)
+- **Forecast**: 0.1
+- **Previous**: 0.2
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### SI - Retail Sales YoY (Jan) (2026-02-26 09:30 UTC)
+- **Forecast**: 1.8
+- **Previous**: 2.4
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.22)
+
+
+### EU - Economic Sentiment (Feb) (2026-02-26 10:00 UTC)
+- **Forecast**: 99.5
+- **Previous**: 99.4
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### EU - Selling Price Expectations (Feb) (2026-02-26 10:00 UTC)
+- **Forecast**: 9
+- **Previous**: 10
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### EU - Services Sentiment (Feb) (2026-02-26 10:00 UTC)
+- **Forecast**: 7
+- **Previous**: 7.2
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### EU - Industrial Sentiment (Feb) (2026-02-26 10:00 UTC)
+- **Forecast**: -7
+- **Previous**: -6.8
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### EU - Consumer Inflation Expectation (Feb) (2026-02-26 10:00 UTC)
+- **Forecast**: 22
+- **Previous**: 24.1
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### EU - Consumer Confidence (Feb) (2026-02-26 10:00 UTC)
+- **Forecast**: -12.2
+- **Previous**: -12.4
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### MT - GDP Growth Rate YoY (Q4) (2026-02-26 10:00 UTC)
+- **Forecast**: 2.7
+- **Previous**: 3
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### EU - Business Climate (2026-02-26 10:00 UTC)
+- **Previous**: -0.41
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### CY - Industrial Production YoY (Dec) (2026-02-26 10:00 UTC)
+- **Forecast**: 4.5
+- **Previous**: 8.5
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### HR - Producer Price Index YoY (Jan) (2026-02-26 10:00 UTC)
+- **Forecast**: -0.3
+- **Previous**: 0.1
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### ME - Tourist Arrivals YoY (Jan) (2026-02-26 10:00 UTC)
+- **Forecast**: -6
+- **Previous**: -7.9
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### IT - 5-Year BTP Auction (2026-02-26 10:10 UTC)
+- **Previous**: 2.74
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### IT - 10-Year BTP Auction (2026-02-26 10:10 UTC)
+- **Previous**: 3.44
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### BW - Interest Rate Decision (2026-02-26 10:15 UTC)
+- **Forecast**: 3.5
+- **Previous**: 3.5
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.29)
+
+
+### BE - Inflation Rate MoM (Feb) (2026-02-26 10:30 UTC)
+- **Forecast**: 0.2
+- **Previous**: 0.44
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### BE - Inflation Rate YoY (Feb) (2026-02-26 10:30 UTC)
+- **Forecast**: 1.1
+- **Previous**: 1.1
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### BE - CPI (Feb) (2026-02-26 10:30 UTC)
+- **Previous**: 1.1
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### RU - Summary of the Key Rate Discussion (2026-02-26 10:30 UTC)
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### GR - Total Credit YoY (Jan) (2026-02-26 11:00 UTC)
+- **Forecast**: 5.1
+- **Previous**: 5.5
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### IL - Manufacturing Production MoM (Dec) (2026-02-26 11:00 UTC)
+- **Forecast**: 0.2
+- **Previous**: 6.3
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### IL - Industrial Production MoM (Dec) (2026-02-26 11:00 UTC)
+- **Previous**: 6.3
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### ES - Business Confidence (Feb) (2026-02-26 11:00 UTC)
+- **Forecast**: -3.2
+- **Previous**: -3
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### ES - Business Confidence (2026-02-26 11:00 UTC)
+- **Previous**: -3
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### BR - IGP-M Inflation MoM (Feb) (2026-02-26 11:00 UTC)
+- **Forecast**: -0.3
+- **Previous**: 0.41
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### TR - Foreign Exchange Reserves (Feb/20) (2026-02-26 11:30 UTC)
+- **Previous**: 79.59
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### MX - Unemployment Rate (Jan) (2026-02-26 12:00 UTC)
+- **Forecast**: 2.7
+- **Previous**: 2.4
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.24)
+
+
+### BR - BCB National Monetary Council Meeting (2026-02-26 12:00 UTC)
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### NG - Gross Domestic Product YoY (Q4) (2026-02-26 13:00 UTC)
+- **Previous**: 3.98
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### US - Initial Jobless Claims (Feb/21) (2026-02-26 13:30 UTC)
+- **Forecast**: 210
+- **Previous**: 206
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.48)
+
+
+### US - Continuing Jobless Claims (Feb/14) (2026-02-26 13:30 UTC)
+- **Forecast**: 1872
+- **Previous**: 1869
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.24)
+
+
+### US - Jobless Claims 4-Week Average (Feb/21) (2026-02-26 13:30 UTC)
+- **Forecast**: 221
+- **Previous**: 219
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.24)
+
+
+### US - Core PCE Price Index MoM (Jan) (2026-02-26 13:30 UTC)
+- **Impact**: High, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### CA - Wholesale Sales MoM (2026-02-26 13:30 UTC)
+- **Previous**: 2
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### US - Durable Goods Orders ex Defense MoM (Jan) (2026-02-26 13:30 UTC)
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### US - PCE Price Index MoM (Jan) (2026-02-26 13:30 UTC)
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### CA - Current Account (Q4) (2026-02-26 13:30 UTC)
+- **Forecast**: -5
+- **Previous**: -9.7
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### US - Building Permits (Jan) (2026-02-26 13:30 UTC)
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### CA - Wholesale Sales MoM (Jan) (2026-02-26 13:30 UTC)
+- **Forecast**: 0.3
+- **Previous**: 2
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### US - Durable Goods Orders Ex Transp MoM (Jan) (2026-02-26 13:30 UTC)
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### US - Non Defense Goods Orders Ex Air (Jan) (2026-02-26 13:30 UTC)
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### US - Core PCE Price Index YoY (Jan) (2026-02-26 13:30 UTC)
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### US - Personal Income MoM (Jan) (2026-02-26 13:30 UTC)
+- **Impact**: High, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### US - Personal Spending MoM (Jan) (2026-02-26 13:30 UTC)
+- **Impact**: High, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### US - PCE Price Index YoY (Jan) (2026-02-26 13:30 UTC)
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### US - Durable Goods Orders MoM (Jan) (2026-02-26 13:30 UTC)
+- **Impact**: High, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### CA - Average Weekly Earnings (Dec) (2026-02-26 13:30 UTC)
+- **Forecast**: 2.3
+- **Previous**: 2.5
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### SA - M3 Money Supply YoY (Jan) (2026-02-26 14:00 UTC)
+- **Previous**: 8.4
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### SA - M3 Money Supply YoY (2026-02-26 14:00 UTC)
+- **Previous**: 8.4
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### SA - Private sector loans (Jan) (2026-02-26 14:00 UTC)
+- **Previous**: 10.2
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### CO - Business Confidence (Jan) (2026-02-26 15:00 UTC)
+- **Previous**: -0.7
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### US - Fed Bowman Speech (2026-02-26 15:00 UTC)
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### US - EIA Natural Gas Stocks Change (Feb/20) (2026-02-26 15:30 UTC)
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### US - Kansas Fed Composite Index (Feb) (2026-02-26 16:00 UTC)
+- **Forecast**: 1
+- **Previous**: 0
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### US - Kansas Fed Manufacturing Index (Feb) (2026-02-26 16:00 UTC)
+- **Forecast**: -1
+- **Previous**: -2
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### US - 4-Week Bill Auction (2026-02-26 16:30 UTC)
+- **Previous**: 3.625
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### US - 8-Week Bill Auction (2026-02-26 16:30 UTC)
+- **Previous**: 3.63
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### CA - 2-Year Bond Auction (2026-02-26 17:00 UTC)
+- **Previous**: 2.556
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### US - 30-Year Mortgage Rate (Feb/26) (2026-02-26 17:00 UTC)
+- **Previous**: 6.01
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### US - 15-Year Mortgage Rate (Feb/26) (2026-02-26 17:00 UTC)
+- **Previous**: 5.35
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### US - 7-Year Note Auction (2026-02-26 18:00 UTC)
+- **Previous**: 4.018
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### PY - Producer Price Index YoY (Jan) (2026-02-26 20:00 UTC)
+- **Forecast**: 1.5
+- **Previous**: 1.2
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### NZ - ANZ Roy Morgan Consumer Confidence (Feb) (2026-02-26 21:00 UTC)
+- **Forecast**: 106.5
+- **Previous**: 107.2
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### US - Fed Balance Sheet (Feb/25) (2026-02-26 21:30 UTC)
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### FI - Industrial Confidence (2026-02-26 23:00 UTC)
+- **Previous**: -1
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### JP - CPI (Feb) (2026-02-26 23:30 UTC)
+- **Forecast**: 1.5
+- **Previous**: 1.5
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.26)
+
+
+### JP - Core CPI YoY (Feb) (2026-02-26 23:30 UTC)
+- **Forecast**: 1.8
+- **Previous**: 2
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.26)
+
+
+### JP - Stock Investment by Foreigners (Feb/21) (2026-02-26 23:50 UTC)
+- **Previous**: 1424.2
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### JP - Foreign Bond Investment (Feb/21) (2026-02-26 23:50 UTC)
+- **Previous**: -489.5
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### JP - Industrial Production MoM (Feb) (2026-02-26 23:50 UTC)
+- **Previous**: 9.3
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### JP - Retail Sales MoM (Jan) (2026-02-26 23:50 UTC)
+- **Forecast**: 1.5
+- **Previous**: -2
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.22)
+
+
+### JP - Industrial Production MoM (Jan) (2026-02-26 23:50 UTC)
+- **Forecast**: 4.3
+- **Previous**: -0.1
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### JP - Industrial Production MoM (Mar) (2026-02-26 23:50 UTC)
+- **Previous**: -4.3
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### JP - Retail Sales YoY (Jan) (2026-02-26 23:50 UTC)
+- **Forecast**: -0.6
+- **Previous**: -0.9
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.45)
+
+
+### JP - Industrial Production YoY (Jan) (2026-02-26 23:50 UTC)
+- **Forecast**: 1.2
+- **Previous**: 2.6
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### IE - Consumer Confidence (Feb) (2026-02-27 00:01 UTC)
+- **Previous**: 64.7
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### IE - Consumer Confidence (2026-02-27 00:01 UTC)
+- **Previous**: 64.7
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### UK - Car Production YoY (Jan) (2026-02-27 00:01 UTC)
+- **Forecast**: 5.3
+- **Previous**: 17.7
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### UK - Consumer Confidence (Feb) (2026-02-27 00:01 UTC)
+- **Forecast**: -16
+- **Previous**: -16
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### AU - Housing Credit MoM (Jan) (2026-02-27 00:30 UTC)
+- **Forecast**: 0.6
+- **Previous**: 0.7
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### AU - Private Sector Credit YoY (Jan) (2026-02-27 00:30 UTC)
+- **Forecast**: 7.6
+- **Previous**: 7.7
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### AU - Private Sector Credit MoM (Jan) (2026-02-27 00:30 UTC)
+- **Forecast**: 0.6
+- **Previous**: 0.8
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### PH - Producer Price Index YoY (2026-02-27 01:00 UTC)
+- **Previous**: 0.9
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### PH - Imports YoY (Jan) (2026-02-27 01:00 UTC)
+- **Previous**: 7.1
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### PH - Balance of Trade (Jan) (2026-02-27 01:00 UTC)
+- **Forecast**: -3.8
+- **Previous**: -3.525
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### PH - Exports YoY (Jan) (2026-02-27 01:00 UTC)
+- **Previous**: 23.3
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### PH - Producer Price Index YoY (Jan) (2026-02-27 01:00 UTC)
+- **Forecast**: 1.1
+- **Previous**: 0.9
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### SG - Bank Lending (Jan) (2026-02-27 02:00 UTC)
+- **Forecast**: 895
+- **Previous**: 886.1
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### TW - Consumer Confidence (Feb) (2026-02-27 02:00 UTC)
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### NZ - Money Supply (Jan) (2026-02-27 02:00 UTC)
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### SG - Import Prices YoY (Jan) (2026-02-27 03:30 UTC)
+- **Forecast**: -3.8
+- **Previous**: -3.3
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### SG - Producer Price Index YoY (Jan) (2026-02-27 03:30 UTC)
+- **Forecast**: -4
+- **Previous**: -3.3
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### SG - Export Prices YoY (Jan) (2026-02-27 03:30 UTC)
+- **Forecast**: -3.2
+- **Previous**: -4.9
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### JP - 2-Year JGB Auction (2026-02-27 03:35 UTC)
+- **Previous**: 1.253
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### JP - 3-Month Bill Auction (2026-02-27 03:35 UTC)
+- **Previous**: 0.7573
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### TH - Industrial Production YoY (Jan) (2026-02-27 04:00 UTC)
+- **Forecast**: 3
+- **Previous**: 2.52
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### JP - Construction Orders YoY (Jan) (2026-02-27 05:00 UTC)
+- **Forecast**: 12
+- **Previous**: 20.2
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### JP - Housing Starts YoY (Jan) (2026-02-27 05:00 UTC)
+- **Forecast**: -2
+- **Previous**: -1.3
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### NL - Business Confidence (Feb) (2026-02-27 05:30 UTC)
+- **Forecast**: 1
+- **Previous**: 0.8
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### NL - Business Confidence (2026-02-27 05:30 UTC)
+- **Previous**: 0.8
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### FI - Industrial Confidence (2026-02-27 06:00 UTC)
+- **Previous**: -1
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### FI - GDP Growth Rate QoQ (Q4) (2026-02-27 06:00 UTC)
+- **Forecast**: 0.6
+- **Previous**: -0.3
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### EE - Producer Price Index YoY (Jan) (2026-02-27 06:00 UTC)
+- **Forecast**: -1
+- **Previous**: -0.5
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### FI - Gross Domestic Product YoY (Q4) (2026-02-27 06:00 UTC)
+- **Previous**: -0.6
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### EE - Producer Price Index MoM (Jan) (2026-02-27 06:00 UTC)
+- **Forecast**: 0.5
+- **Previous**: -1.1
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### ZA - Private Sector Credit (Jan) (2026-02-27 06:00 UTC)
+- **Previous**: 8.74
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### FI - Gross Domestic Product YoY (Jan) (2026-02-27 06:00 UTC)
+- **Forecast**: -0.1
+- **Previous**: -0.3
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### FI - GDP Growth Rate YoY (Q4) (2026-02-27 06:00 UTC)
+- **Forecast**: 0
+- **Previous**: -0.6
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### ZA - M3 Money Supply YoY (Jan) (2026-02-27 06:00 UTC)
+- **Previous**: 8.16
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### FI - Gross Domestic Product QoQ (Q4) (2026-02-27 06:00 UTC)
+- **Forecast**: 0.6
+- **Previous**: -0.3
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### ZA - Private Sector Credit YoY (Jan) (2026-02-27 06:00 UTC)
+- **Forecast**: 9.4
+- **Previous**: 8.74
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### MY - M3 Money Supply YoY (Jan) (2026-02-27 07:00 UTC)
+- **Previous**: 4.1
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### TR - GDP Growth Rate YoY (Q4) (2026-02-27 07:00 UTC)
+- **Forecast**: 3.2
+- **Previous**: 3.7
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### UK - Nationwide Housing Prices YoY (Feb) (2026-02-27 07:00 UTC)
+- **Forecast**: 1.8
+- **Previous**: 1
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### NO - Unemployment Rate (Feb) (2026-02-27 07:00 UTC)
+- **Previous**: 2.3
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.24)
+
+
+### TH - Imports YoY (Jan) (2026-02-27 07:00 UTC)
+- **Previous**: 18
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### TR - Participation Rate (Jan) (2026-02-27 07:00 UTC)
+- **Forecast**: 53.9
+- **Previous**: 53.2
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### LT - Industrial Production MoM (Jan) (2026-02-27 07:00 UTC)
+- **Forecast**: -0.2
+- **Previous**: -0.3
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### LT - Retail Sales MoM (Jan) (2026-02-27 07:00 UTC)
+- **Previous**: 14.5
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.22)
+
+
+### UK - Nationwide Housing Prices MoM (2026-02-27 07:00 UTC)
+- **Previous**: 0.3
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### SE - Gross Domestic Product QoQ (Q4) (2026-02-27 07:00 UTC)
+- **Forecast**: 0.2
+- **Previous**: 0.2
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### TH - Exports YoY (Jan) (2026-02-27 07:00 UTC)
+- **Previous**: 18.1
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### SE - Gross Domestic Product YoY (Q4) (2026-02-27 07:00 UTC)
+- **Forecast**: 1.8
+- **Previous**: 1.8
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### TH - Private Investment MoM (Jan) (2026-02-27 07:00 UTC)
+- **Forecast**: 1
+- **Previous**: 3.6
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### EE - Money Supply (Jan) (2026-02-27 07:00 UTC)
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### TR - Economic Confidence Index (Feb) (2026-02-27 07:00 UTC)
+- **Forecast**: 99.9
+- **Previous**: 99.4
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### LT - Retail Sales YoY (Jan) (2026-02-27 07:00 UTC)
+- **Forecast**: 2.2
+- **Previous**: 2.4
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.22)
+
+
+### DE - Import Prices MoM (Jan) (2026-02-27 07:00 UTC)
+- **Forecast**: 0.6
+- **Previous**: -0.1
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### SE - GDP Growth Rate YoY (Q4) (2026-02-27 07:00 UTC)
+- **Forecast**: 1.8
+- **Previous**: 2.6
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### NO - Registered Jobless Rate (Feb) (2026-02-27 07:00 UTC)
+- **Forecast**: 2.3
+- **Previous**: 2.3
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### NO - Household Consumption MoM (Jan) (2026-02-27 07:00 UTC)
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### TH - Private Consumption MoM (Jan) (2026-02-27 07:00 UTC)
+- **Forecast**: -0.6
+- **Previous**: 2.5
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### LT - Industrial Production YoY (Jan) (2026-02-27 07:00 UTC)
+- **Forecast**: 2.8
+- **Previous**: 3.8
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### LT - Retail Sales YoY (2026-02-27 07:00 UTC)
+- **Previous**: 3.3
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.22)
+
+
+### UK - Nationwide Housing Prices MoM (Feb) (2026-02-27 07:00 UTC)
+- **Forecast**: 0.3
+- **Previous**: 0.3
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### DK - Unemployment Rate (Jan) (2026-02-27 07:00 UTC)
+- **Forecast**: 2.6
+- **Previous**: 2.6
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.24)
+
+
+### SE - Retail Sales MoM (Jan) (2026-02-27 07:00 UTC)
+- **Forecast**: 0.4
+- **Previous**: -0.7
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.22)
+
+
+### NO - Unemployed Persons (Feb) (2026-02-27 07:00 UTC)
+- **Forecast**: 64
+- **Previous**: 63.6
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### GE - Gross Domestic Product YoY (Jan) (2026-02-27 07:00 UTC)
+- **Forecast**: 7
+- **Previous**: 7.2
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### TR - Unemployment Rate (Jan) (2026-02-27 07:00 UTC)
+- **Forecast**: 8.6
+- **Previous**: 7.7
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.48)
+
+
+### SE - GDP Growth Rate QoQ (Q4) (2026-02-27 07:00 UTC)
+- **Forecast**: 0.2
+- **Previous**: 1.1
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### UK - Nationwide Housing Prices YoY (2026-02-27 07:00 UTC)
+- **Previous**: 1
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### LT - Retail Sales MoM (2026-02-27 07:00 UTC)
+- **Previous**: 14.5
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.22)
+
+
+### DE - Import Prices YoY (Jan) (2026-02-27 07:00 UTC)
+- **Forecast**: -2.8
+- **Previous**: -2.3
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### NO - Retail Sales MoM (Jan) (2026-02-27 07:00 UTC)
+- **Forecast**: 0.4
+- **Previous**: -0.7
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.22)
+
+
+### SE - Retail Sales YoY (Jan) (2026-02-27 07:00 UTC)
+- **Forecast**: 1.7
+- **Previous**: 1.5
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.22)
+
+
+### TR - GDP Growth Rate QoQ (Q4) (2026-02-27 07:00 UTC)
+- **Forecast**: 1
+- **Previous**: 1.1
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### SE - Balance of Trade (Jan) (2026-02-27 07:00 UTC)
+- **Forecast**: 4.5
+- **Previous**: 7.4
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### TH - Current Account (Jan) (2026-02-27 07:00 UTC)
+- **Forecast**: 3.6
+- **Previous**: 3.1
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### MY - Money Supply YoY (Jan) (2026-02-27 07:00 UTC)
+- **Previous**: 4.1
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### TH - Retail Sales YoY (Dec) (2026-02-27 07:30 UTC)
+- **Forecast**: 25
+- **Previous**: 15.5
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.22)
+
+
+### CH - Retail Sales YoY (2026-02-27 07:30 UTC)
+- **Previous**: 2.9
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.22)
+
+
+### HU - Unemployment Rate (Jan) (2026-02-27 07:30 UTC)
+- **Forecast**: 4.5
+- **Previous**: 4.4
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.24)
+
+
+### HU - Producer Price Index YoY (Jan) (2026-02-27 07:30 UTC)
+- **Forecast**: -3.1
+- **Previous**: -3.4
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### TH - Currency Swaps (2026-02-27 07:30 UTC)
+- **Previous**: 22.1
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### FR - Household Consumption MoM (Jan) (2026-02-27 07:45 UTC)
+- **Forecast**: 0.5
+- **Previous**: -0.6
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### FR - Consumer Spending MoM (Jan) (2026-02-27 07:45 UTC)
+- **Forecast**: 0.3
+- **Previous**: -0.6
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### FR - Harmonised Inflation Rate YoY (Feb) (2026-02-27 07:45 UTC)
+- **Forecast**: 0.7
+- **Previous**: 0.4
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### FR - Producer Price Index MoM (Jan) (2026-02-27 07:45 UTC)
+- **Forecast**: 0.3
+- **Previous**: 0.2
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### FR - HICP YoY (2026-02-27 07:45 UTC)
+- **Previous**: 0.4
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### FR - Harmonised Inflation Rate MoM (Feb) (2026-02-27 07:45 UTC)
+- **Forecast**: 0.4
+- **Previous**: -0.4
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### FR - Gross Domestic Product QoQ (Q4) (2026-02-27 07:45 UTC)
+- **Forecast**: 0.2
+- **Previous**: 0.2
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### FR - GDP Growth Rate QoQ (Q4) (2026-02-27 07:45 UTC)
+- **Forecast**: 0.2
+- **Previous**: 0.5
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### FR - Producer Price Index YoY (Jan) (2026-02-27 07:45 UTC)
+- **Forecast**: -2.6
+- **Previous**: -2
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### FR - Inflation Rate MoM (Feb) (2026-02-27 07:45 UTC)
+- **Forecast**: 0.4
+- **Previous**: -0.3
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### FR - Inflation Rate YoY (Feb) (2026-02-27 07:45 UTC)
+- **Forecast**: 0.7
+- **Previous**: 0.3
+- **Impact**: High, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### FR - CPI (Feb) (2026-02-27 07:45 UTC)
+- **Forecast**: 0.5
+- **Previous**: -0.3
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### FR - GDP Growth Rate YoY (Q4) (2026-02-27 07:45 UTC)
+- **Forecast**: 1.1
+- **Previous**: 0.9
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### FR - Non-Farm Payrolls QoQ (Q4) (2026-02-27 07:45 UTC)
+- **Forecast**: -0.1
+- **Previous**: -0.1
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.28)
+
+
+### FR - Gross Domestic Product QoQ (Q1) (2026-02-27 07:45 UTC)
+- **Forecast**: 0.2
+- **Previous**: 0.5
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### FR - Gross Domestic Product YoY (Q4) (2026-02-27 07:45 UTC)
+- **Forecast**: 1.1
+- **Previous**: 0.9
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### FR - HICP MoM (2026-02-27 07:45 UTC)
+- **Previous**: -0.3
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### FR - CPI (Jan) (2026-02-27 07:45 UTC)
+- **Previous**: 0.3
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### ES - HICP MoM (2026-02-27 08:00 UTC)
+- **Previous**: -0.8
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### ES - HICP YoY (2026-02-27 08:00 UTC)
+- **Previous**: 2.4
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### CH - GDP Growth Rate YoY (Q4) (2026-02-27 08:00 UTC)
+- **Forecast**: 1
+- **Previous**: 0.8
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### ES - CPI (Feb) (2026-02-27 08:00 UTC)
+- **Forecast**: 2.2
+- **Previous**: 2.3
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### ES - Harmonised Inflation Rate MoM (Feb) (2026-02-27 08:00 UTC)
+- **Forecast**: 0.3
+- **Previous**: 0.3
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### CH - KOF Leading Indicators (Feb) (2026-02-27 08:00 UTC)
+- **Forecast**: 102.2
+- **Previous**: 102.5
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### ES - Inflation Rate YoY (Feb) (2026-02-27 08:00 UTC)
+- **Forecast**: 2.2
+- **Previous**: 2.3
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### AT - Producer Price Index YoY (Jan) (2026-02-27 08:00 UTC)
+- **Forecast**: -1.7
+- **Previous**: -1.9
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### ES - Harmonised Inflation Rate YoY (Feb) (2026-02-27 08:00 UTC)
+- **Forecast**: 2.3
+- **Previous**: 2.4
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### ES - Core Inflation Rate YoY (Feb) (2026-02-27 08:00 UTC)
+- **Forecast**: 2.5
+- **Previous**: 2.6
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### ES - Inflation Rate MoM (Feb) (2026-02-27 08:00 UTC)
+- **Forecast**: 0.3
+- **Previous**: -0.4
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### KE - CPI (Feb) (2026-02-27 08:00 UTC)
+- **Previous**: 4.4
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### CH - Gross Domestic Product YoY (Q4) (2026-02-27 08:00 UTC)
+- **Previous**: 0.5
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### AT - Producer Price Index MoM (Jan) (2026-02-27 08:00 UTC)
+- **Forecast**: -0.1
+- **Previous**: -0.3
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### HK - Imports YoY (Jan) (2026-02-27 08:30 UTC)
+- **Previous**: 30.6
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### MO - Inflation Rate MoM (Jan) (2026-02-27 08:30 UTC)
+- **Forecast**: 0.2
+- **Previous**: 0.17
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### HK - Exports MoM (Jan) (2026-02-27 08:30 UTC)
+- **Previous**: 26.1
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### HK - Money Supply (Jan) (2026-02-27 08:30 UTC)
+- **Previous**: 4.2
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### HK - Balance of Trade (Jan) (2026-02-27 08:30 UTC)
+- **Forecast**: -2
+- **Previous**: -63.3
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### MO - Inflation Rate YoY (Jan) (2026-02-27 08:30 UTC)
+- **Forecast**: 0.7
+- **Previous**: 0.69
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### HK - Balance of Trade (2026-02-27 08:30 UTC)
+- **Previous**: -63.3
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### HK - Exports YoY (Jan) (2026-02-27 08:30 UTC)
+- **Previous**: 26.1
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### HK - Imports MoM (Jan) (2026-02-27 08:30 UTC)
+- **Previous**: 30.6
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### UG - CPI (Feb) (2026-02-27 08:30 UTC)
+- **Previous**: 3.2
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### BH - CPI (Jan) (2026-02-27 08:30 UTC)
+- **Previous**: -0.7
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### DE - Employment Change (Feb) (2026-02-27 08:55 UTC)
+- **Forecast**: 5
+- **Previous**: 0
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### DE - Unemployed Persons (Feb) (2026-02-27 08:55 UTC)
+- **Forecast**: 2.981
+- **Previous**: 2.976
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### DE - Unemployment Rate (Feb) (2026-02-27 08:55 UTC)
+- **Forecast**: 6.3
+- **Previous**: 6.3
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.48)
+
+
+### DE - Hesse CPI MoM (Feb) (2026-02-27 09:00 UTC)
+- **Previous**: 0
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### DE - Baden Wuerttemberg CPI MoM (Feb) (2026-02-27 09:00 UTC)
+- **Previous**: 0
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### DE - Bavaria CPI MoM (Feb) (2026-02-27 09:00 UTC)
+- **Previous**: 0
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### BG - Producer Price Index MoM (Jan) (2026-02-27 09:00 UTC)
+- **Forecast**: 0.8
+- **Previous**: 1.4
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### EU - Consumer Inflation Expectation (Jan) (2026-02-27 09:00 UTC)
+- **Forecast**: 2.9
+- **Previous**: 2.8
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### DE - Saxony CPI MoM (Feb) (2026-02-27 09:00 UTC)
+- **Previous**: 0
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### IS - GDP Growth Rate YoY (Q4) (2026-02-27 09:00 UTC)
+- **Forecast**: 1
+- **Previous**: 1.2
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### DE - Hesse CPI YoY (Feb) (2026-02-27 09:00 UTC)
+- **Previous**: 2.1
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### DE - Brandenburg CPI YoY (Feb) (2026-02-27 09:00 UTC)
+- **Previous**: 2.2
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### IT - Industrial Sales YoY (Dec) (2026-02-27 09:00 UTC)
+- **Forecast**: 0.4
+- **Previous**: 0
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### ES - Current Account (Dec) (2026-02-27 09:00 UTC)
+- **Forecast**: 2
+- **Previous**: 0.21
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### BG - Tourist Arrivals YoY (Jan) (2026-02-27 09:00 UTC)
+- **Forecast**: 7
+- **Previous**: 6.6
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### IS - Gross Domestic Product QoQ (Q4) (2026-02-27 09:00 UTC)
+- **Previous**: -0.2
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### IS - GDP Growth Rate QoQ (Q4) (2026-02-27 09:00 UTC)
+- **Forecast**: 0.1
+- **Previous**: -0.2
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### IT - Industrial Sales MoM (Dec) (2026-02-27 09:00 UTC)
+- **Forecast**: 0.6
+- **Previous**: -0.1
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### DE - North Rhine Westphalia CPI MoM (Feb) (2026-02-27 09:00 UTC)
+- **Previous**: 0.1
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### IS - Gross Domestic Product YoY (Q4) (2026-02-27 09:00 UTC)
+- **Previous**: 1.2
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### DE - Bavaria CPI YoY (Feb) (2026-02-27 09:00 UTC)
+- **Previous**: 2.1
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### DE - Brandenburg CPI MoM (Feb) (2026-02-27 09:00 UTC)
+- **Previous**: 0
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### DE - North Rhine Westphalia CPI YoY (Feb) (2026-02-27 09:00 UTC)
+- **Previous**: 2
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### BG - Business Confidence (Feb) (2026-02-27 09:00 UTC)
+- **Forecast**: 16
+- **Previous**: 15.5
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### BG - Producer Price Index YoY (Jan) (2026-02-27 09:00 UTC)
+- **Forecast**: 9.8
+- **Previous**: 9.6
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### DE - Saxony CPI YoY (Feb) (2026-02-27 09:00 UTC)
+- **Previous**: 2.3
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### DE - Baden Wuerttemberg CPI YoY (Feb) (2026-02-27 09:00 UTC)
+- **Previous**: 2.1
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### MK - Current Account (Q4) (2026-02-27 09:00 UTC)
+- **Forecast**: -250
+- **Previous**: 60.4
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### SI - Inflation Rate MoM (Feb) (2026-02-27 09:30 UTC)
+- **Forecast**: 0.2
+- **Previous**: -0.5
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### SI - Harmonised Inflation Rate YoY (Feb) (2026-02-27 09:30 UTC)
+- **Forecast**: 2.3
+- **Previous**: 2.4
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### SI - Inflation Rate YoY (Feb) (2026-02-27 09:30 UTC)
+- **Forecast**: 2.5
+- **Previous**: 2.6
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### MO - Unemployment Rate (Jan) (2026-02-27 09:30 UTC)
+- **Forecast**: 1.8
+- **Previous**: 1.8
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.24)
+
+
+### LK - Inflation Rate YoY (Feb) (2026-02-27 09:30 UTC)
+- **Forecast**: 2.4
+- **Previous**: 2.3
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### SI - Producer Price Index YoY (Jan) (2026-02-27 09:30 UTC)
+- **Forecast**: 1.3
+- **Previous**: 1.1
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### GR - Producer Price Index YoY (Jan) (2026-02-27 10:00 UTC)
+- **Forecast**: -2.6
+- **Previous**: -2.1
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### BE - Gross Domestic Product QoQ (Q4) (2026-02-27 10:00 UTC)
+- **Forecast**: 0.2
+- **Previous**: 0.2
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### BE - GDP Growth Rate YoY (Q4) (2026-02-27 10:00 UTC)
+- **Forecast**: 1.1
+- **Previous**: 1
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### GR - Retail Sales YoY (Dec) (2026-02-27 10:00 UTC)
+- **Forecast**: 0.7
+- **Previous**: 0.3
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.22)
+
+
+### IT - Balance of Trade (Jan) (2026-02-27 10:00 UTC)
+- **Previous**: 8.39
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### HR - GDP Growth Rate YoY (Q4) (2026-02-27 10:00 UTC)
+- **Forecast**: 2.5
+- **Previous**: 2.3
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### MO - Tourist Arrivals YoY (Jan) (2026-02-27 10:00 UTC)
+- **Previous**: 17.8
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### MO - Retail Sales YoY (Q4) (2026-02-27 10:00 UTC)
+- **Forecast**: 1.3
+- **Previous**: 0.8
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.22)
+
+
+### ME - Balance of Trade (Jan) (2026-02-27 10:00 UTC)
+- **Forecast**: -300
+- **Previous**: -327.5
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### ES - Consumer Confidence (Jan) (2026-02-27 10:00 UTC)
+- **Previous**: 75.9
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### ES - Consumer Confidence (2026-02-27 10:00 UTC)
+- **Previous**: 75.9
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### BE - GDP Growth Rate QoQ (Q4) (2026-02-27 10:00 UTC)
+- **Forecast**: 0.2
+- **Previous**: 0.3
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### IN - Government Budget Value (Jan) (2026-02-27 10:30 UTC)
+- **Forecast**: -12500
+- **Previous**: -8558.4
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### IN - Fiscal Year GDP Growth (2025) (2026-02-27 10:30 UTC)
+- **Forecast**: 7.4
+- **Previous**: 6.5
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### BE - Producer Price Index YoY (Jan) (2026-02-27 10:30 UTC)
+- **Forecast**: -2
+- **Previous**: -1.8
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### IN - GDP Growth Rate YoY (Q4) (2026-02-27 10:30 UTC)
+- **Forecast**: 7.8
+- **Previous**: 8.2
+- **Impact**: High, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### IN - Gross Domestic Product YoY (Q3) (2026-02-27 10:30 UTC)
+- **Previous**: 8.2
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### PT - GDP Growth Rate QoQ (Q4) (2026-02-27 11:00 UTC)
+- **Forecast**: 0.8
+- **Previous**: 0.7
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### PT - CPI (Feb) (2026-02-27 11:00 UTC)
+- **Previous**: 1.9
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### FR - Unemployment Benefit Claims (Jan) (2026-02-27 11:00 UTC)
+- **Forecast**: 7.5
+- **Previous**: -11.9
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### PT - GDP Growth Rate YoY (Q4) (2026-02-27 11:00 UTC)
+- **Forecast**: 1.9
+- **Previous**: 2.3
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### LV - Retail Sales MoM (Jan) (2026-02-27 11:00 UTC)
+- **Forecast**: 0.4
+- **Previous**: -0.8
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.22)
+
+
+### LV - GDP Growth Rate QoQ (Q4) (2026-02-27 11:00 UTC)
+- **Forecast**: 0.5
+- **Previous**: 0.6
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### RS - Unemployment Rate (Q4) (2026-02-27 11:00 UTC)
+- **Forecast**: 8.4
+- **Previous**: 8.2
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.24)
+
+
+### RS - Retail Sales YoY (Jan) (2026-02-27 11:00 UTC)
+- **Forecast**: 6.8
+- **Previous**: 8.5
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.22)
+
+
+### IE - Retail Sales MoM (2026-02-27 11:00 UTC)
+- **Previous**: -0.4
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.22)
+
+
+### IE - Retail Sales YoY (2026-02-27 11:00 UTC)
+- **Previous**: -0.1
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.22)
+
+
+### PT - Inflation Rate YoY (Feb) (2026-02-27 11:00 UTC)
+- **Forecast**: 1.9
+- **Previous**: 1.9
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### IE - Retail Sales YoY (Jan) (2026-02-27 11:00 UTC)
+- **Forecast**: 0.6
+- **Previous**: -0.1
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.22)
+
+
+### LV - Gross Domestic Product YoY (Q4) (2026-02-27 11:00 UTC)
+- **Previous**: 2.5
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### PT - Gross Domestic Product QoQ (Q4) (2026-02-27 11:00 UTC)
+- **Forecast**: 0.8
+- **Previous**: 0.8
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### LV - GDP Growth Rate YoY (Q4) (2026-02-27 11:00 UTC)
+- **Forecast**: 1.7
+- **Previous**: 2.5
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### PT - Inflation Rate MoM (Feb) (2026-02-27 11:00 UTC)
+- **Forecast**: -0.1
+- **Previous**: -0.7
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### LU - Producer Price Index YoY (Jan) (2026-02-27 11:00 UTC)
+- **Forecast**: -3.2
+- **Previous**: -2.9
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### PT - Gross Domestic Product YoY (Q4) (2026-02-27 11:00 UTC)
+- **Forecast**: 1.9
+- **Previous**: 1.9
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### MK - Producer Price Index YoY (Jan) (2026-02-27 11:00 UTC)
+- **Forecast**: 3.5
+- **Previous**: 4.1
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### FR - Jobseekers Total (Jan) (2026-02-27 11:00 UTC)
+- **Forecast**: 3124.9
+- **Previous**: 3117.4
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### IE - Retail Sales MoM (Jan) (2026-02-27 11:00 UTC)
+- **Forecast**: 0.5
+- **Previous**: -0.4
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.22)
+
+
+### RS - Industrial Production YoY (Jan) (2026-02-27 11:00 UTC)
+- **Forecast**: -2.5
+- **Previous**: -5.7
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### LV - Retail Sales YoY (Jan) (2026-02-27 11:00 UTC)
+- **Forecast**: 1
+- **Previous**: 0.8
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.22)
+
+
+### MK - Retail Sales YoY (Jan) (2026-02-27 11:00 UTC)
+- **Forecast**: 1.8
+- **Previous**: 1.2
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.22)
+
+
+### BR - Gross Debt to GDP (Jan) (2026-02-27 11:30 UTC)
+- **Forecast**: 78.5
+- **Previous**: 78.7
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### IN - Infrastructure Output YoY (Jan) (2026-02-27 11:30 UTC)
+- **Forecast**: 3.2
+- **Previous**: 3.7
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### BR - Nominal Budget Balance (Jan) (2026-02-27 11:30 UTC)
+- **Forecast**: 54
+- **Previous**: -115.502
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### BR - Gross Domestic Product MoM (Jan) (2026-02-27 11:30 UTC)
+- **Previous**: 78.7
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### IN - Deposit Growth YoY (Feb/06) (2026-02-27 11:30 UTC)
+- **Previous**: 12.5
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### BR - Primary Budget Surplus (Jan) (2026-02-27 11:30 UTC)
+- **Previous**: 6.251
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### BR - Current Account (Jan) (2026-02-27 11:30 UTC)
+- **Previous**: -3.36
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### IN - Foreign Exchange Reserves (Feb/20) (2026-02-27 11:30 UTC)
+- **Previous**: 725.73
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### BR - Foreign Direct Investment (Jan) (2026-02-27 11:30 UTC)
+- **Previous**: -5.25
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### IN - Bank Loan Growth YoY (Feb/06) (2026-02-27 11:30 UTC)
+- **Previous**: 14.6
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### BR - Budget Balance (Jan) (2026-02-27 11:30 UTC)
+- **Previous**: -115.502
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### BR - Net Debt-to-GDP ratio (Jan) (2026-02-27 11:30 UTC)
+- **Previous**: 65.3
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### BR - CPI (Feb) (2026-02-27 12:00 UTC)
+- **Previous**: 0.2
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### CL - Unemployment Rate (Jan) (2026-02-27 12:00 UTC)
+- **Forecast**: 8
+- **Previous**: 8
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.24)
+
+
+### CL - Manufacturing Production YoY (Jan) (2026-02-27 12:00 UTC)
+- **Forecast**: 1.2
+- **Previous**: 0.1
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### CL - Retail Sales YoY (Jan) (2026-02-27 12:00 UTC)
+- **Forecast**: 4
+- **Previous**: 4.5
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.22)
+
+
+### BR - IPCA mid-month CPI MoM (Feb) (2026-02-27 12:00 UTC)
+- **Forecast**: 0.5
+- **Previous**: 0.2
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### CA - CFIB Business Barometer (Feb) (2026-02-27 12:00 UTC)
+- **Forecast**: 59
+- **Previous**: 59.5
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### MX - Balance of Trade (Jan) (2026-02-27 12:00 UTC)
+- **Forecast**: -4
+- **Previous**: 2.43
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### BR - Unemployment Rate (Jan) (2026-02-27 12:00 UTC)
+- **Forecast**: 5.3
+- **Previous**: 5.1
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.48)
+
+
+### CL - Industrial Production YoY (Jan) (2026-02-27 12:00 UTC)
+- **Forecast**: 1.4
+- **Previous**: -1.9
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### ZA - Balance of Trade (Jan) (2026-02-27 12:00 UTC)
+- **Forecast**: -20
+- **Previous**: 23.18
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### BR - IPCA mid-month CPI YoY (Feb) (2026-02-27 12:00 UTC)
+- **Forecast**: 3.9
+- **Previous**: 4.5
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### CL - Retail Sales MoM (Jan) (2026-02-27 12:00 UTC)
+- **Forecast**: 0.1
+- **Previous**: 0.2
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.22)
+
+
+### CL - Copper Production YoY (Jan) (2026-02-27 12:00 UTC)
+- **Forecast**: 6
+- **Previous**: 4.7
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### CL - Retail Sales YoY (2026-02-27 12:00 UTC)
+- **Previous**: 4.5
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.22)
+
+
+### DE - Inflation Rate YoY (Feb) (2026-02-27 13:00 UTC)
+- **Forecast**: 2
+- **Previous**: 2.1
+- **Impact**: High, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### RU - Central Bank Reserves $ (2026-02-27 13:00 UTC)
+- **Previous**: 806.1
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### NG - Foreign Exchange Reserves (Feb) (2026-02-27 13:00 UTC)
+- **Previous**: 46.11
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### DE - Inflation Rate MoM (Feb) (2026-02-27 13:00 UTC)
+- **Forecast**: 0.3
+- **Previous**: 0.1
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### UK - BoE Member Pill Speech (2026-02-27 13:00 UTC)
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.18)
+
+
+### DE - Harmonised Inflation Rate YoY (Feb) (2026-02-27 13:00 UTC)
+- **Forecast**: 2
+- **Previous**: 2.1
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### DE - HICP YoY (2026-02-27 13:00 UTC)
+- **Previous**: 2.1
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### DE - CPI (Feb) (2026-02-27 13:00 UTC)
+- **Previous**: 0.1
+- **Impact**: High, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### DE - Harmonised Inflation Rate MoM (Feb) (2026-02-27 13:00 UTC)
+- **Forecast**: 0.4
+- **Previous**: -0.1
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### DE - HICP MoM (2026-02-27 13:00 UTC)
+- **Previous**: -0.1
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### US - Producer Price Index (Jan) (2026-02-27 13:30 UTC)
+- **Forecast**: 151.9
+- **Previous**: 151.472
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### US - Core PPI MoM (Jan) (2026-02-27 13:30 UTC)
+- **Forecast**: 0.2
+- **Previous**: 0.7
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### US - PPI Ex Food, Energy and Trade YoY (Jan) (2026-02-27 13:30 UTC)
+- **Forecast**: 3.4
+- **Previous**: 3.5
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### US - Producer Price Index MoM (Jan) (2026-02-27 13:30 UTC)
+- **Forecast**: 0.3
+- **Previous**: 0.5
+- **Impact**: High, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### CA - GDP Growth Annualized (Q4) (2026-02-27 13:30 UTC)
+- **Forecast**: 0
+- **Previous**: 2.6
+- **Impact**: High, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### US - Wholesale Inventories MoM (Jan) (2026-02-27 13:30 UTC)
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### US - Retail Inventories Ex Autos MoM (Jan) (2026-02-27 13:30 UTC)
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### US - Producer Price Index YoY (Jan) (2026-02-27 13:30 UTC)
+- **Forecast**: 2.9
+- **Previous**: 3
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### CA - GDP Implicit Price QoQ (Q4) (2026-02-27 13:30 UTC)
+- **Forecast**: 0.7
+- **Previous**: 0.8
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### CA - Gross Domestic Product YoY (Q4) (2026-02-27 13:30 UTC)
+- **Previous**: 1.42
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### US - Core PPI YoY (Jan) (2026-02-27 13:30 UTC)
+- **Forecast**: 3.3
+- **Previous**: 3.3
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### US - PPI Ex Food, Energy and Trade MoM (Jan) (2026-02-27 13:30 UTC)
+- **Forecast**: 0.1
+- **Previous**: 0.4
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### CA - GDP Growth Rate QoQ (Q4) (2026-02-27 13:30 UTC)
+- **Forecast**: -0.1
+- **Previous**: 0.6
+- **Impact**: High, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### CA - Gross Domestic Product MoM (Jan) (2026-02-27 13:30 UTC)
+- **Forecast**: 0
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### CA - Gross Domestic Product QoQ (Q4) (2026-02-27 13:30 UTC)
+- **Previous**: 2.6
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### US - Goods Trade Balance Adv (Jan) (2026-02-27 13:30 UTC)
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### CA - Gross Domestic Product MoM (Dec) (2026-02-27 13:30 UTC)
+- **Forecast**: 0.1
+- **Previous**: 0
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### FR - 3-Month BTF Auction (2026-02-27 14:00 UTC)
+- **Previous**: 2.021
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### FR - 6-Month BTF Auction (2026-02-27 14:00 UTC)
+- **Previous**: 2.045
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### US - Chicago PMI (Feb) (2026-02-27 14:45 UTC)
+- **Forecast**: 51
+- **Previous**: 54
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### CA - BoC Interest Rate Decision (2026-02-27 14:45 UTC)
+- **Previous**: 2.25
+- **Impact**: High, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.98)
+
+
+### CO - Unemployment Rate (Jan) (2026-02-27 15:00 UTC)
+- **Forecast**: 8.3
+- **Previous**: 8
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.24)
+
+
+### US - Construction Spending MoM (Nov) (2026-02-27 15:00 UTC)
+- **Forecast**: -0.1
+- **Previous**: 0.5
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### US - Construction Spending MoM (Dec) (2026-02-27 15:00 UTC)
+- **Forecast**: 0.2
+- **Previous**: 0.5
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### RU - Industrial Production YoY (Jan) (2026-02-27 16:00 UTC)
+- **Forecast**: 4
+- **Previous**: 3.7
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### CA - Budget Balance (Dec) (2026-02-27 16:00 UTC)
+- **Forecast**: -1.3
+- **Previous**: -8.02
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### US - Atlanta Fed GDPNow (Q1) (2026-02-27 16:30 UTC)
+- **Forecast**: 3.1
+- **Previous**: 3.1
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: USDJPY (0.51)
+
+
+### ZA - Budget Balance (Jan) (2026-02-27 17:37 UTC)
+- **Previous**: 38.44
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### US - Baker Hughes Oil Rig Count (Feb/27) (2026-02-27 18:00 UTC)
+- **Previous**: 409
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### CO - Cement Production YoY (Jan) (2026-02-27 19:00 UTC)
+- **Forecast**: 5
+- **Previous**: 3.1
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### UY - Balance of Trade (Jan) (2026-02-27 19:30 UTC)
+- **Forecast**: -190
+- **Previous**: -151.839
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### SR - Current Account (Q4) (2026-02-27 20:00 UTC)
+- **Previous**: -78.8
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### SR - Balance of Trade (Q4) (2026-02-27 20:00 UTC)
+- **Previous**: 188.5
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### US - CFTC S&P 500 speculative net positions (2026-02-27 20:30 UTC)
+- **Previous**: -177.8
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### BR - CFTC BRL speculative net positions (2026-02-27 20:30 UTC)
+- **Previous**: 34.7
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### US - CFTC Crude Oil speculative net positions (2026-02-27 20:30 UTC)
+- **Previous**: 141.3
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### UK - CFTC GBP speculative net positions (2026-02-27 20:30 UTC)
+- **Previous**: -42.4
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### NZ - CFTC NZD speculative net positions (2026-02-27 20:30 UTC)
+- **Previous**: -35
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### US - CFTC Wheat speculative net positions (2026-02-27 20:30 UTC)
+- **Previous**: -55.1
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### EU - CFTC EUR speculative net positions (2026-02-27 20:30 UTC)
+- **Previous**: 174.5
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### US - CFTC Gold Speculative net positions (2026-02-27 20:30 UTC)
+- **Previous**: 159.9
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### US - CFTC Copper Speculative net positions (2026-02-27 20:30 UTC)
+- **Previous**: 59.3
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### US - CFTC Soybeans speculative net positions (2026-02-27 20:30 UTC)
+- **Previous**: 191.8
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### CA - CFTC CAD speculative net positions (2026-02-27 20:30 UTC)
+- **Previous**: 25.8
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### JP - CFTC JPY speculative net positions (2026-02-27 20:30 UTC)
+- **Previous**: 13
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### US - CFTC Silver Speculative net positions (2026-02-27 20:30 UTC)
+- **Previous**: 24
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### AU - CFTC AUD speculative net positions (2026-02-27 20:30 UTC)
+- **Previous**: 45.9
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### CH - CFTC CHF speculative net positions (2026-02-27 20:30 UTC)
+- **Previous**: -40.9
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### US - CFTC Aluminium Speculative net positions (2026-02-27 20:30 UTC)
+- **Previous**: -2.7
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### MX - CFTC MXN speculative net positions (2026-02-27 20:30 UTC)
+- **Previous**: 84.1
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### US - CFTC Natural Gas speculative net positions (2026-02-27 20:30 UTC)
+- **Previous**: -185.8
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### US - CFTC Corn speculative net positions (2026-02-27 20:30 UTC)
+- **Previous**: -7.8
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### US - CFTC Nasdaq 100 speculative net positions (2026-02-27 20:30 UTC)
+- **Previous**: 24.4
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### IN - Manufacturing Output MoM (Jan) (2026-02-28 10:30 UTC)
+- **Previous**: 8.1
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### IN - Industrial Production (Jan) (2026-02-28 10:30 UTC)
+- **Previous**: 3.9
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### KR - Imports YoY (Feb) (2026-03-01 00:00 UTC)
+- **Previous**: 11.7
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### KR - Balance of Trade (Feb) (2026-03-01 00:00 UTC)
+- **Forecast**: 11
+- **Previous**: 8.74
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### KR - Exports YoY (Feb) (2026-03-01 00:00 UTC)
+- **Previous**: 33.9
+- **Impact**: Medium, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### KR - Exports YoY (Jan) (2026-03-01 01:00 UTC)
+- **Forecast**: 33.9
+- **Previous**: 33.9
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### KR - Balance of Trade (Jan) (2026-03-01 01:00 UTC)
+- **Forecast**: 8.74
+- **Previous**: 8.74
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+### KR - Imports YoY (Jan) (2026-03-01 01:00 UTC)
+- **Forecast**: 11.7
+- **Previous**: 11.7
+- **Impact**: Low, Decay: 100.0%
+- **Affected Pairs**: 
+
+
+
+## ⚡ Trading Implications
+
+- **USDJPY**: 🟡 MEDIUM macro risk
+

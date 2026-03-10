@@ -1,0 +1,116 @@
+# Market Regime Detection — Validation Workflow (pre-train steps only)
+# Runs: setup-tables → process-usdjpy-h1 → process-usdjpy-h4
+# Does NOT run train steps.
+# Submit with: argo submit argos/market_regime_validation.yaml -n argo-workflows
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: market-regime-validation-
+  namespace: argo-workflows
+spec:
+  serviceAccountName: argo-workflow-executor
+  imagePullSecrets:
+  - name: ams3-digitalocean-cervid-registry
+  nodeSelector:
+    doks.digitalocean.com/node-pool: ams3-digitalocean-cervid-amd-compute
+  entrypoint: main
+
+  templates:
+  - name: main
+    steps:
+    - - name: setup-tables
+        template: setup-tables
+    - - name: process-usdjpy-h1
+        template: process-step
+        arguments:
+          parameters:
+          - { name: pair, value: "USD_JPY" }
+          - { name: timeframe, value: "H1" }
+    - - name: process-usdjpy-h4
+        template: process-step
+        arguments:
+          parameters:
+          - { name: pair, value: "USD_JPY" }
+          - { name: timeframe, value: "H4" }
+
+  # Step 1: Create ClickHouse tables (idempotent; uses IF NOT EXISTS)
+  - name: setup-tables
+    container:
+      image: registry.digitalocean.com/ams3-digitalocean-cervid-registry/market-regime-data-processing:latest
+      command: [python, setup_tables.py]
+      env:
+      - name: CLICKHOUSE_HOST
+        valueFrom:
+          secretKeyRef:
+            name: market-regime-detection-secrets
+            key: CLICKHOUSE_HOST
+      - name: CLICKHOUSE_PORT
+        valueFrom:
+          secretKeyRef:
+            name: market-regime-detection-secrets
+            key: CLICKHOUSE_PORT
+      - name: CLICKHOUSE_USERNAME
+        valueFrom:
+          secretKeyRef:
+            name: market-regime-detection-secrets
+            key: CLICKHOUSE_USERNAME
+      - name: CLICKHOUSE_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: market-regime-detection-secrets
+            key: CLICKHOUSE_PASSWORD
+      - name: CLICKHOUSE_DATABASE
+        valueFrom:
+          secretKeyRef:
+            name: market-regime-detection-secrets
+            key: CLICKHOUSE_DATABASE
+      - name: CLICKHOUSE_SECURE
+        value: "true"
+      resources:
+        requests:
+          memory: 256Mi
+          cpu: 250m
+        limits:
+          memory: 512Mi
+          cpu: 500m
+
+  - name: process-step
+    inputs:
+      parameters:
+      - name: pair
+      - name: timeframe
+    container:
+      image: registry.digitalocean.com/ams3-digitalocean-cervid-registry/market-regime-data-processing:latest
+      command: [python, process_data.py]
+      env:
+      - name: PAIR
+        value: "{{inputs.parameters.pair}}"
+      - name: TIMEFRAME
+        value: "{{inputs.parameters.timeframe}}"
+      - name: OUTPUT_PATH
+        value: /workspace/{{inputs.parameters.pair}}_{{inputs.parameters.timeframe}}.csv
+      - name: OANDA_API_KEY
+        valueFrom:
+          secretKeyRef:
+            name: market-regime-detection-secrets
+            key: OANDA_API_KEY
+      resources:
+        requests:
+          memory: 1Gi
+          cpu: 500m
+        limits:
+          memory: 2Gi
+          cpu: 1000m
+      volumeMounts:
+      - name: workspace
+        mountPath: /workspace
+
+  volumeClaimTemplates:
+  - metadata:
+      name: workspace
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: do-block-storage
+      resources:
+        requests:
+          storage: 5Gi

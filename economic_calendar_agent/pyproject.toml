@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "economic-calendar-agent"
+version = "0.1.0"
+description = "LangGraph agent for economic calendar analysis with ClickHouse correlation tracking"
+requires-python = ">=3.10"
+dependencies = [
+    "langgraph>=0.2",
+    "langchain-core>=0.3",
+    "langchain-openai>=0.2",
+    "httpx[http2]>=0.27,<1",
+    "pydantic>=2.0,<3",
+    "pydantic-settings>=2.0,<3",
+    "clickhouse-connect>=0.7,<1",
+    "qdrant-client>=1.9,<2",
+    "redis[hiredis]>=5.0,<6",
+    "aiolimiter>=1.1,<2",
+    "sentence-transformers>=2.0,<3",
+    "numpy>=1.24,<2",
+    "mlflow>=2.12,<3",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+    "pytest-cov>=4.0",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

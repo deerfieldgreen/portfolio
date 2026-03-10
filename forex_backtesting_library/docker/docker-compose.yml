@@ -1,0 +1,26 @@
+# ClickHouse for forex_backtesting_library (vectorbt_grid)
+# User: root, database: default. Password set in .env (copy from .env.example).
+services:
+  clickhouse:
+    image: clickhouse/clickhouse-server:24.8
+    container_name: forex-clickhouse
+    restart: unless-stopped
+    ulimits:
+      nofile:
+        soft: 262144
+        hard: 262144
+    environment:
+      CLICKHOUSE_DB: default
+      CLICKHOUSE_USER: root
+      CLICKHOUSE_PASSWORD: ${CLICKHOUSE_PASSWORD}
+      CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: 1
+    ports:
+      - "8123:8123"   # HTTP
+      - "9000:9000"   # Native
+    volumes:
+      - clickhouse_data:/var/lib/clickhouse
+      - clickhouse_logs:/var/log/clickhouse-server
+
+volumes:
+  clickhouse_data:
+  clickhouse_logs:

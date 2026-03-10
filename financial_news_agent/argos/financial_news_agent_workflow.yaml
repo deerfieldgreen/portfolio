@@ -1,0 +1,144 @@
+# Financial News Agent pipeline: bootstrap (ClickHouse schema) → fetch (Tavily) → score (Qwen3/Novita) → store (ClickHouse)
+# Submit with: argo submit --from workflowtemplate/financial-news-agent -n argo-workflows
+# Secrets from K8s secret financial-news-agent (synced via DopplerSecret from project financial_news_agent, config prd)
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: financial-news-agent
+  namespace: argo-workflows
+spec:
+  serviceAccountName: argo-workflow-executor
+  imagePullSecrets:
+  - name: ams3-digitalocean-cervid-registry
+  nodeSelector:
+    doks.digitalocean.com/node-pool: ams3-digitalocean-cervid-amd-compute
+  tolerations:
+  - key: nvidia.com/gpu
+    operator: Exists
+    effect: NoSchedule
+  entrypoint: pipeline
+  templates:
+  - name: pipeline
+    steps:
+    - - name: bootstrap
+        template: bootstrap
+    - - name: score-news
+        template: score-news
+  - name: bootstrap
+    container:
+      image: registry.digitalocean.com/ams3-digitalocean-cervid-registry/financial-news-agent:latest
+      command: [python, bootstrap/clickhouse_bootstrap.py]
+      env:
+      - name: CLICKHOUSE_HOST
+        valueFrom:
+          secretKeyRef:
+            name: financial-news-agent
+            key: CLICKHOUSE_HOST
+      - name: CLICKHOUSE_PORT
+        valueFrom:
+          secretKeyRef:
+            name: financial-news-agent
+            key: CLICKHOUSE_PORT
+            optional: true
+      - name: CLICKHOUSE_USERNAME
+        valueFrom:
+          secretKeyRef:
+            name: financial-news-agent
+            key: CLICKHOUSE_USERNAME
+            optional: true
+      - name: CLICKHOUSE_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: financial-news-agent
+            key: CLICKHOUSE_PASSWORD
+      - name: CLICKHOUSE_DATABASE
+        valueFrom:
+          secretKeyRef:
+            name: financial-news-agent
+            key: CLICKHOUSE_DATABASE
+            optional: true
+      resources:
+        requests:
+          memory: 256Mi
+          cpu: 100m
+        limits:
+          memory: 512Mi
+          cpu: 500m
+    retryStrategy:
+      limit: 2
+      retryPolicy: "OnFailure"
+      backoff:
+        duration: "30s"
+        factor: 2
+        maxDuration: "5m"
+    activeDeadlineSeconds: 300
+  - name: score-news
+    container:
+      image: registry.digitalocean.com/ams3-digitalocean-cervid-registry/financial-news-agent:latest
+      command: [python, scoring_pipeline.py]
+      args: []  # Run all queries
+      env:
+      - name: CONFIG_YAML
+        valueFrom:
+          secretKeyRef:
+            name: financial-news-agent
+            key: CONFIG_YAML
+      - name: TAVILY_API_KEY
+        valueFrom:
+          secretKeyRef:
+            name: financial-news-agent
+            key: TAVILY_API_KEY
+      - name: NOVITA_API_KEY
+        valueFrom:
+          secretKeyRef:
+            name: financial-news-agent
+            key: NOVITA_API_KEY
+      - name: CLICKHOUSE_HOST
+        valueFrom:
+          secretKeyRef:
+            name: financial-news-agent
+            key: CLICKHOUSE_HOST
+      - name: CLICKHOUSE_PORT
+        valueFrom:
+          secretKeyRef:
+            name: financial-news-agent
+            key: CLICKHOUSE_PORT
+            optional: true
+      - name: CLICKHOUSE_USERNAME
+        valueFrom:
+          secretKeyRef:
+            name: financial-news-agent
+            key: CLICKHOUSE_USERNAME
+            optional: true
+      - name: CLICKHOUSE_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: financial-news-agent
+            key: CLICKHOUSE_PASSWORD
+      - name: CLICKHOUSE_DATABASE
+        valueFrom:
+          secretKeyRef:
+            name: financial-news-agent
+            key: CLICKHOUSE_DATABASE
+            optional: true
+      - name: NEWS_DOMAINS
+        valueFrom:
+          secretKeyRef:
+            name: financial-news-agent
+            key: NEWS_DOMAINS
+            optional: true
+      resources:
+        requests:
+          memory: 512Mi
+          cpu: 250m
+        limits:
+          memory: 2Gi
+          cpu: 1000m
+    retryStrategy:
+      limit: 2
+      retryPolicy: "OnFailure"
+      backoff:
+        duration: "2m"
+        factor: 2
+        maxDuration: "10m"
+    activeDeadlineSeconds: 3600

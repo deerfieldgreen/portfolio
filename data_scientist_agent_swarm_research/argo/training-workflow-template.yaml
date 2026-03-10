@@ -1,0 +1,177 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: fx-training
+  namespace: argo-workflows
+spec:
+  entrypoint: retrain
+  serviceAccountName: argo-workflow-executor
+  imagePullSecrets:
+    - name: ams3-digitalocean-cervid-registry
+  activeDeadlineSeconds: 43200
+  artifactGC:
+    strategy: OnWorkflowDeletion
+  templates:
+
+    - name: retrain
+      dag:
+        tasks:
+          - name: load-universe
+            template: load-universe
+
+          - name: extract-and-train
+            template: extract-train-promote
+            dependencies: [load-universe]
+            withParam: "{{tasks.load-universe.outputs.parameters.pairs}}"
+            arguments:
+              parameters:
+                - name: pair
+                  value: "{{item.pair}}"
+                - name: timeframe
+                  value: "{{item.timeframe}}"
+
+    - name: load-universe
+      container:
+        image: registry.digitalocean.com/ams3-digitalocean-cervid-registry/fx-ops:latest
+        command: [python, -c]
+        args:
+          - |
+            import json
+            from src.shared.ch_client import get_client
+            ch = get_client()
+            rows = ch.query(
+                "SELECT pair, timeframe FROM fxs_serving_universe WHERE active = 1"
+            ).named_results()
+            pairs = [dict(r) for r in rows]
+            with open("/tmp/pairs.json", "w") as f:
+                json.dump(pairs, f)
+        envFrom:
+          - secretRef:
+              name: argo-data-science-swarm
+      outputs:
+        parameters:
+          - name: pairs
+            valueFrom:
+              path: /tmp/pairs.json
+
+    - name: extract-train-promote
+      inputs:
+        parameters:
+          - name: pair
+          - name: timeframe
+      dag:
+        tasks:
+          - name: extract
+            template: extract-data
+            arguments:
+              parameters:
+                - name: pair
+                  value: "{{inputs.parameters.pair}}"
+                - name: timeframe
+                  value: "{{inputs.parameters.timeframe}}"
+
+          - name: train
+            template: train-champion
+            dependencies: [extract]
+            arguments:
+              parameters:
+                - name: pair
+                  value: "{{inputs.parameters.pair}}"
+                - name: timeframe
+                  value: "{{inputs.parameters.timeframe}}"
+
+          - name: promote
+            template: promotion-gate
+            dependencies: [train]
+            arguments:
+              parameters:
+                - name: pair
+                  value: "{{inputs.parameters.pair}}"
+                - name: timeframe
+                  value: "{{inputs.parameters.timeframe}}"
+                - name: run_id
+                  value: "{{tasks.train.outputs.parameters.run_id}}"
+
+    - name: extract-data
+      inputs:
+        parameters:
+          - name: pair
+          - name: timeframe
+      nodeSelector:
+        doks.digitalocean.com/node-pool: ams3-digitalocean-cervid-amd-pool
+      container:
+        image: registry.digitalocean.com/ams3-digitalocean-cervid-registry/fx-ops:latest
+        command: [python, -m, src.training.extract_training_data]
+        env:
+          - name: PAIR
+            value: "{{inputs.parameters.pair}}"
+          - name: TIMEFRAME
+            value: "{{inputs.parameters.timeframe}}"
+        envFrom:
+          - secretRef:
+              name: argo-data-science-swarm
+        resources:
+          requests:
+            cpu: "1"
+            memory: "4Gi"
+          limits:
+            cpu: "2"
+            memory: "8Gi"
+
+    - name: train-champion
+      inputs:
+        parameters:
+          - name: pair
+          - name: timeframe
+      nodeSelector:
+        doks.digitalocean.com/node-pool: pool-a1lt1h9r5-gpu-pool
+      container:
+        image: registry.digitalocean.com/ams3-digitalocean-cervid-registry/fx-training:latest
+        command: [python, -m, src.training.executor]
+        env:
+          - name: PAIR
+            value: "{{inputs.parameters.pair}}"
+          - name: TIMEFRAME
+            value: "{{inputs.parameters.timeframe}}"
+          - name: OPENBLAS_NUM_THREADS
+            value: "1"
+          - name: OMP_NUM_THREADS
+            value: "1"
+          - name: MKL_NUM_THREADS
+            value: "1"
+        envFrom:
+          - secretRef:
+              name: argo-data-science-swarm
+        resources:
+          requests:
+            memory: "8Gi"
+          limits:
+            nvidia.com/gpu: "1"
+            memory: "16Gi"
+      outputs:
+        parameters:
+          - name: run_id
+            valueFrom:
+              path: /tmp/run_id
+
+    - name: promotion-gate
+      inputs:
+        parameters:
+          - name: pair
+          - name: timeframe
+          - name: run_id
+      nodeSelector:
+        doks.digitalocean.com/node-pool: ams3-digitalocean-cervid-amd-pool
+      container:
+        image: registry.digitalocean.com/ams3-digitalocean-cervid-registry/fx-ops:latest
+        command: [python, -m, src.training.promotion_gate]
+        env:
+          - name: PAIR
+            value: "{{inputs.parameters.pair}}"
+          - name: TIMEFRAME
+            value: "{{inputs.parameters.timeframe}}"
+          - name: RUN_ID
+            value: "{{inputs.parameters.run_id}}"
+        envFrom:
+          - secretRef:
+              name: argo-data-science-swarm
