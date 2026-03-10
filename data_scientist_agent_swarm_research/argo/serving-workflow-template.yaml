@@ -1,0 +1,131 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: fx-serving
+  namespace: argo-workflows
+spec:
+  entrypoint: main
+  serviceAccountName: argo-workflow-executor
+  imagePullSecrets:
+    - name: ams3-digitalocean-cervid-registry
+  artifactGC:
+    strategy: OnWorkflowDeletion
+  templates:
+
+    - name: main
+      dag:
+        tasks:
+          - name: database-setup
+            template: database-setup
+
+          - name: load-universe
+            template: load-universe
+            dependencies: [database-setup]
+
+          - name: process-all
+            template: process-pair-tf
+            dependencies: [load-universe]
+            withParam: "{{tasks.load-universe.outputs.parameters.pairs}}"
+            arguments:
+              parameters:
+                - name: pair
+                  value: "{{item.pair}}"
+                - name: timeframe
+                  value: "{{item.timeframe}}"
+                - name: oanda_instrument
+                  value: "{{item.oanda_instrument}}"
+                - name: candle_count
+                  value: "{{item.candle_count}}"
+
+          - name: aggregate
+            template: aggregate-cross-tf
+            dependencies: [process-all]
+
+          - name: validate
+            template: validate
+            dependencies: [aggregate]
+
+    - name: load-universe
+      container:
+        image: registry.digitalocean.com/ams3-digitalocean-cervid-registry/fx-ops:latest
+        command: [python, -c]
+        args:
+          - |
+            import json
+            from src.shared.ch_client import get_client
+            ch = get_client()
+            rows = ch.query(
+                "SELECT pair, timeframe, oanda_instrument, candle_count "
+                "FROM fxs_serving_universe WHERE active = 1"
+            ).named_results()
+            pairs = [dict(r) for r in rows]
+            with open("/tmp/pairs.json", "w") as f:
+                json.dump(pairs, f)
+        envFrom:
+          - secretRef:
+              name: argo-data-science-swarm
+      outputs:
+        parameters:
+          - name: pairs
+            valueFrom:
+              path: /tmp/pairs.json
+
+    - name: process-pair-tf
+      inputs:
+        parameters:
+          - name: pair
+          - name: timeframe
+          - name: oanda_instrument
+          - name: candle_count
+      nodeSelector:
+        doks.digitalocean.com/node-pool: ams3-digitalocean-cervid-amd-pool
+      container:
+        image: registry.digitalocean.com/ams3-digitalocean-cervid-registry/fx-serving:latest
+        command: [python, -m, src.serving.process_pair_tf]
+        env:
+          - name: PAIR
+            value: "{{inputs.parameters.pair}}"
+          - name: TIMEFRAME
+            value: "{{inputs.parameters.timeframe}}"
+          - name: OANDA_INSTRUMENT
+            value: "{{inputs.parameters.oanda_instrument}}"
+          - name: CANDLE_COUNT
+            value: "{{inputs.parameters.candle_count}}"
+        envFrom:
+          - secretRef:
+              name: argo-data-science-swarm
+        resources:
+          requests:
+            cpu: "500m"
+            memory: "2Gi"
+          limits:
+            cpu: "1"
+            memory: "4Gi"
+
+    - name: aggregate-cross-tf
+      nodeSelector:
+        doks.digitalocean.com/node-pool: ams3-digitalocean-cervid-amd-pool
+      container:
+        image: registry.digitalocean.com/ams3-digitalocean-cervid-registry/fx-ops:latest
+        command: [python, -m, src.serving.aggregate_cross_tf]
+        envFrom:
+          - secretRef:
+              name: argo-data-science-swarm
+
+    - name: validate
+      container:
+        image: registry.digitalocean.com/ams3-digitalocean-cervid-registry/fx-ops:latest
+        command: [python, -m, src.serving.validate]
+        envFrom:
+          - secretRef:
+              name: argo-data-science-swarm
+
+    - name: database-setup
+      nodeSelector:
+        doks.digitalocean.com/node-pool: ams3-digitalocean-cervid-amd-pool
+      container:
+        image: registry.digitalocean.com/ams3-digitalocean-cervid-registry/fx-ops:latest
+        command: [python, -m, scripts.database_setup]
+        envFrom:
+          - secretRef:
+              name: argo-data-science-swarm

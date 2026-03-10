@@ -1,0 +1,106 @@
+id: NEWS_SCORE_V1
+version: 1.1
+purpose: Score incoming news items for sentiment and currency bias (primary-currency focus)
+trigger: Each Tavily news item
+
+role: You are a forex news sentiment analyst. Identify the PRIMARY currency the article discusses, then score directional sentiment, timeliness, and volatility impact for that currency only.
+
+template: |
+  You are a forex news sentiment analyst. Analyze the news item and output structured scores.
+  
+  News Item:
+  {news_text}
+  
+  Timestamp: {timestamp}
+  Source: {source}
+  
+  STEP 1 – PRIMARY CURRENCY: Decide which single currency is the primary focus: USD, EUR, GBP, JPY, AUD, CAD, CHF, NZD, or NONE. Include majors and crosses (AUD/USD, EUR/JPY, etc.) when one currency drives the story. If not forex-relevant or currencies are equally weighted, use NONE.
+  
+  STEP 2 – ANALYSIS (only if primary_currency is not NONE): Provide analysis for the primary currency ONLY.
+  
+  Output JSON with these fields:
+  - primary_currency: "USD" | "EUR" | "GBP" | "JPY" | "AUD" | "CAD" | "CHF" | "NZD" | "NONE"
+  - confidence: 0.0 to 1.0 (how relevant the article is to forex + certainty in primary_currency and scores; low if primary_currency is NONE)
+  - bearish: 0.0 to 1.0 (strength of bearish signal for primary currency; 0=none, 1=strong)
+  - bullish: 0.0 to 1.0 (strength of bullish signal; 0=none, 1=strong)
+  - neutral: 0.0 to 1.0 (strength of neutral/mixed or no directional signal; 0=none, 1=fully neutral)
+  - timeliness_score: 0.0 to 1.0 (combine article timestamp + content urgency)
+    - Article published today + content says "URGENT", "SELL OFF NOW", etc. = IMMEDIATE (0.7–1.0)
+    - Content implies impact within 72h = NEAR-TERM (0.3–0.7)
+    - Content about long-term trends, next week/month/year = LONG-TERM (0.0–0.3)
+  - volatility_impact: 0.0 to 1.0
+    - HIGH (shock, fear, greed, acute impacts, crash): 0.6–1.0
+    - LOW (macro, tailwinds, long-term policy): 0.0–0.4
+  - affected_pairs: array of pairs directly mentioned or implied (e.g. ["USD/JPY", "EUR/USD"])
+  - summary: one sentence (max 20 words)
+  
+  Respond ONLY with valid JSON.
+
+input_variables:
+  - news_text: The full text content of the news item
+  - timestamp: ISO timestamp of the news item
+  - source: Source publication or website name
+
+output_schema:
+  type: object
+  required:
+    - primary_currency
+    - confidence
+    - bearish
+    - bullish
+    - neutral
+    - timeliness_score
+    - volatility_impact
+    - affected_pairs
+    - summary
+  properties:
+    primary_currency:
+      type: string
+      enum: ["USD", "EUR", "GBP", "JPY", "AUD", "CAD", "CHF", "NZD", "NONE"]
+      description: Primary currency (G8 majors or NONE if not forex-relevant)
+    confidence:
+      type: number
+      minimum: 0.0
+      maximum: 1.0
+      description: How relevant to forex + certainty in primary_currency and scores
+    bearish:
+      type: number
+      minimum: 0.0
+      maximum: 1.0
+      description: Bearish signal strength for primary currency (0–1)
+    bullish:
+      type: number
+      minimum: 0.0
+      maximum: 1.0
+      description: Bullish signal strength for primary currency (0–1)
+    neutral:
+      type: number
+      minimum: 0.0
+      maximum: 1.0
+      description: Neutral/mixed signal strength (0–1)
+    timeliness_score:
+      type: number
+      minimum: 0.0
+      maximum: 1.0
+      description: IMMEDIATE (0.7–1) > NEAR-TERM (0.3–0.7) > LONG-TERM (0–0.3)
+    volatility_impact:
+      type: number
+      minimum: 0.0
+      maximum: 1.0
+      description: HIGH VOLA (shock,fear,crash)=0.6–1; LOW VOLA (macro,policy)=0–0.4
+    affected_pairs:
+      type: array
+      items:
+        type: string
+      description: Currency pairs directly mentioned or implied
+    summary:
+      type: string
+      maxLength: 200
+      description: One sentence summary (max 20 words)
+
+instructions:
+  - First decide the primary currency. If unclear or not forex-relevant, use primary_currency=NONE, set confidence low, and set bearish/bullish/neutral to 0.
+  - Provide directional scores (bearish, bullish, neutral) ONLY for the primary currency.
+  - Timeliness: Use article timestamp AND content together. Today's article + urgent content (e.g. "URGENT SELL OFF") = very timely (0.7–1.0). Content about events in 72h = moderate. Content about week/month/year = low.
+  - Volatility: High-vola language (shock, fear, crash) = high score; macro/policy = low score.
+  - Output must be valid JSON only, no additional text.

@@ -1,0 +1,14 @@
+langgraph>=0.3
+langgraph-checkpoint-redis>=0.1
+openai>=1.0
+qdrant-client>=1.7
+hera-workflows>=5.15
+mlflow[skinny]>=2.8
+clickhouse-connect>=0.7
+jinja2>=3.1
+numpy>=1.24
+tenacity>=8.2
+xxhash>=3.4
+xmltodict>=0.13
+requests>=2.31
+pydantic-settings>=2.0

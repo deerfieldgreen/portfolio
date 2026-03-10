@@ -1,0 +1,35 @@
+# Example data and results (generated locally)
+example_data/
+example_results/
+
+# Oanda configuration (contains secrets)
+oanda.cfg
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Virtual environment
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Results and data directories
+data/
+results/
+
+# Temporary files
+*.tmp
+*.log
+
+# Docker secrets (copy .env.example to .env)
+docker/.env

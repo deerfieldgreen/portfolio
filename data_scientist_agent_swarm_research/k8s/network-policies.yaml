@@ -1,0 +1,16 @@
+# Placeholder for network policies
+# Training pods should only reach: ClickHouse, MLflow, S3
+# Orchestrator pods should only reach: ClickHouse, MLflow, Qdrant, DragonflyDB, Novita API, arXiv API, Tavily API
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: fx-swarm-training-egress
+  namespace: argo
+spec:
+  podSelector:
+    matchLabels:
+      fx-swarm-role: training
+  policyTypes:
+    - Egress
+  egress:
+    - to: []  # TODO: restrict to ClickHouse, MLflow, S3 endpoints

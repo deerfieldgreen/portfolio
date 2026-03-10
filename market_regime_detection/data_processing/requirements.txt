@@ -1,0 +1,9 @@
+# Data processing requirements for market regime detection
+clickhouse-connect>=0.8.0
+pandas>=2.0.0
+numpy>=1.24.0
+pyyaml>=6.0
+oandapyV20>=0.7.2
+requests>=2.31.0
+python-dateutil>=2.8.2
+pytz>=2023.3

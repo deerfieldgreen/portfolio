@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: fx-swarm
+  namespace: argo-workflows
+spec:
+  entrypoint: swarm-orchestrator
+  serviceAccountName: argo-workflow-executor
+  imagePullSecrets:
+    - name: ams3-digitalocean-cervid-registry
+  activeDeadlineSeconds: 86400
+  templates:
+
+    - name: swarm-orchestrator
+      nodeSelector:
+        doks.digitalocean.com/node-pool: ams3-digitalocean-cervid-amd-pool
+      container:
+        image: registry.digitalocean.com/ams3-digitalocean-cervid-registry/fx-orchestrator:latest
+        command: [python, -m, src.swarm.graph]
+        envFrom:
+          - secretRef:
+              name: argo-data-science-swarm
+        resources:
+          requests:
+            cpu: "1"
+            memory: "4Gi"
+          limits:
+            cpu: "2"
+            memory: "8Gi"

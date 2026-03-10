@@ -1,0 +1,10 @@
+.env
+env.example
+.git
+__pycache__
+*.pyc
+design.md
+README.md
+scripts
+docker-compose.yml
+*.md

@@ -1,0 +1,295 @@
+# Forex Backtesting Library: VectorBT grid search pipeline
+# This workflow orchestrates parallel backtesting across symbols, timeframes, and strategies
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: forex-backtesting-library
+  namespace: argo-workflows
+spec:
+  serviceAccountName: argo-workflow-executor
+  imagePullSecrets:
+  - name: ams3-digitalocean-cervid-registry
+  nodeSelector:
+    doks.digitalocean.com/node-pool: ams3-digitalocean-cervid-gpu-pool
+  tolerations:
+  - key: nvidia.com/gpu
+    operator: Exists
+    effect: NoSchedule
+  entrypoint: main
+  
+  arguments:
+    parameters:
+    - name: symbols
+      value: '["USD_JPY", "EUR_USD"]'
+    - name: timeframes
+      value: '["M30", "H1", "H4"]'
+    - name: strategies
+      value: '["trend_following", "scalping", "breakout", "mean_reversion", "macd", "stochastic", "atr_breakout"]'
+    - name: start_date
+      value: "2023-01-01"
+
+  templates:
+  # --- Main DAG: Fetch → Backtest → Store ---
+  - name: main
+    dag:
+      tasks:
+      # 1. Generate parameter combinations (symbol × timeframe)
+      - name: generate-data-pairs
+        template: generate-pairs-step
+        arguments:
+          parameters:
+          - name: symbols
+            value: "{{workflow.parameters.symbols}}"
+          - name: timeframes
+            value: "{{workflow.parameters.timeframes}}"
+      
+      # 2. Fetch data for each symbol/timeframe pair in parallel
+      - name: fetch-data
+        depends: generate-data-pairs
+        template: fetch-data-step
+        arguments:
+          parameters:
+          - name: symbol
+            value: "{{item.symbol}}"
+          - name: timeframe
+            value: "{{item.timeframe}}"
+          - name: start_date
+            value: "{{workflow.parameters.start_date}}"
+        withParam: "{{tasks.generate-data-pairs.outputs.result}}"
+      
+      # 3. Generate backtest job combinations (symbol × timeframe × strategy)
+      - name: generate-backtest-jobs
+        depends: fetch-data
+        template: generate-backtest-jobs-step
+        arguments:
+          parameters:
+          - name: symbols
+            value: "{{workflow.parameters.symbols}}"
+          - name: timeframes
+            value: "{{workflow.parameters.timeframes}}"
+          - name: strategies
+            value: "{{workflow.parameters.strategies}}"
+      
+      # 4. Run backtests in parallel
+      - name: backtest
+        depends: generate-backtest-jobs
+        template: backtest-step
+        arguments:
+          parameters:
+          - name: symbol
+            value: "{{item.symbol}}"
+          - name: timeframe
+            value: "{{item.timeframe}}"
+          - name: strategy
+            value: "{{item.strategy}}"
+        withParam: "{{tasks.generate-backtest-jobs.outputs.result}}"
+
+  # --- Helper: Generate symbol/timeframe pairs ---
+  - name: generate-pairs-step
+    inputs:
+      parameters:
+      - name: symbols
+      - name: timeframes
+    script:
+      image: python:3.11-alpine
+      command: [python]
+      env:
+      - name: SYMBOLS_JSON
+        value: "{{inputs.parameters.symbols}}"
+      - name: TIMEFRAMES_JSON
+        value: "{{inputs.parameters.timeframes}}"
+      source: |
+        import json, os
+        symbols = json.loads(os.environ["SYMBOLS_JSON"])
+        timeframes = json.loads(os.environ["TIMEFRAMES_JSON"])
+        pairs = [{"symbol": s, "timeframe": t} for s in symbols for t in timeframes]
+        print(json.dumps(pairs))
+      resources:
+        requests:
+          memory: 64Mi
+          cpu: 5m
+        limits:
+          memory: 128Mi
+          cpu: 100m
+
+  # --- Helper: Generate backtest job combinations ---
+  - name: generate-backtest-jobs-step
+    inputs:
+      parameters:
+      - name: symbols
+      - name: timeframes
+      - name: strategies
+    script:
+      image: python:3.11-alpine
+      command: [python]
+      env:
+      - name: SYMBOLS_JSON
+        value: "{{inputs.parameters.symbols}}"
+      - name: TIMEFRAMES_JSON
+        value: "{{inputs.parameters.timeframes}}"
+      - name: STRATEGIES_JSON
+        value: "{{inputs.parameters.strategies}}"
+      source: |
+        import json, os
+        symbols = json.loads(os.environ["SYMBOLS_JSON"])
+        timeframes = json.loads(os.environ["TIMEFRAMES_JSON"])
+        strategies = json.loads(os.environ["STRATEGIES_JSON"])
+        jobs = [
+          {"symbol": s, "timeframe": t, "strategy": st}
+          for s in symbols
+          for t in timeframes
+          for st in strategies
+        ]
+        print(json.dumps(jobs))
+      resources:
+        requests:
+          memory: 64Mi
+          cpu: 5m
+        limits:
+          memory: 128Mi
+          cpu: 100m
+
+  # --- Step 1: Fetch data ---
+  - name: fetch-data-step
+    inputs:
+      parameters:
+      - name: symbol
+      - name: timeframe
+      - name: start_date
+    retryStrategy:
+      limit: 2
+      retryPolicy: "OnFailure"
+      backoff:
+        duration: "1m"
+        factor: 2
+        maxDuration: "10m"
+    activeDeadlineSeconds: 1800
+    container:
+      image: registry.digitalocean.com/ams3-digitalocean-cervid-registry/forex-backtesting-library:latest
+      command: [python, /app/scripts/fetch_data.py]
+      args:
+      - --symbol
+      - "{{inputs.parameters.symbol}}"
+      - --timeframe
+      - "{{inputs.parameters.timeframe}}"
+      - --start-date
+      - "{{inputs.parameters.start_date}}"
+      - --output-dir
+      - /workspace/data
+      env:
+      - name: OANDA_API_KEY
+        valueFrom:
+          secretKeyRef:
+            name: forex-backtesting-secrets
+            key: OANDA_API_KEY
+      - name: OANDA_ENVIRONMENT
+        valueFrom:
+          secretKeyRef:
+            name: forex-backtesting-secrets
+            key: OANDA_ENVIRONMENT
+            optional: true
+      resources:
+        requests:
+          memory: 512Mi
+          cpu: 250m
+        limits:
+          memory: 1Gi
+          cpu: 500m
+      volumeMounts:
+      - name: workspace
+        mountPath: /workspace
+
+  # --- Step 2: Backtest strategy + store results ---
+  - name: backtest-step
+    inputs:
+      parameters:
+      - name: symbol
+      - name: timeframe
+      - name: strategy
+    retryStrategy:
+      limit: 2
+      retryPolicy: "OnFailure"
+      backoff:
+        duration: "2m"
+        factor: 2
+        maxDuration: "15m"
+    activeDeadlineSeconds: 3600
+    container:
+      image: registry.digitalocean.com/ams3-digitalocean-cervid-registry/forex-backtesting-library:latest
+      command: [sh, -c]
+      args:
+      - |
+        set -e
+        # Run backtest
+        python /app/scripts/backtest_strategy.py \
+          --symbol "{{inputs.parameters.symbol}}" \
+          --timeframe "{{inputs.parameters.timeframe}}" \
+          --strategy "{{inputs.parameters.strategy}}" \
+          --config /app/config.yaml \
+          --data-dir /workspace/data \
+          --output-dir /workspace/results \
+          --workers 1
+
+        # Store results to ClickHouse immediately (same pod, no PVC handoff)
+        RESULTS_FILE=$(ls -t /workspace/results/{{inputs.parameters.symbol}}_{{inputs.parameters.timeframe}}_{{inputs.parameters.strategy}}_*.json | head -1)
+        if [ -z "$RESULTS_FILE" ]; then
+          echo "ERROR: No results file found after backtest"
+          exit 1
+        fi
+        echo "Storing results from $RESULTS_FILE"
+        python /app/scripts/store_results.py --results-file "$RESULTS_FILE"
+      env:
+      - name: CLICKHOUSE_HOST
+        valueFrom:
+          secretKeyRef:
+            name: forex-backtesting-secrets
+            key: CLICKHOUSE_HOST
+      - name: CLICKHOUSE_PORT
+        valueFrom:
+          secretKeyRef:
+            name: forex-backtesting-secrets
+            key: CLICKHOUSE_PORT
+            optional: true
+      - name: CLICKHOUSE_USERNAME
+        valueFrom:
+          secretKeyRef:
+            name: forex-backtesting-secrets
+            key: CLICKHOUSE_USERNAME
+      - name: CLICKHOUSE_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: forex-backtesting-secrets
+            key: CLICKHOUSE_PASSWORD
+            optional: true
+      - name: CLICKHOUSE_DATABASE
+        valueFrom:
+          secretKeyRef:
+            name: forex-backtesting-secrets
+            key: CLICKHOUSE_DATABASE
+      - name: CLICKHOUSE_SECURE
+        valueFrom:
+          secretKeyRef:
+            name: forex-backtesting-secrets
+            key: CLICKHOUSE_SECURE
+            optional: true
+      resources:
+        requests:
+          memory: 2Gi
+          cpu: 1000m
+        limits:
+          memory: 4Gi
+          cpu: 2000m
+      volumeMounts:
+      - name: workspace
+        mountPath: /workspace
+
+  # --- Volume definitions ---
+  volumeClaimTemplates:
+  - metadata:
+      name: workspace
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: do-block-storage
+      resources:
+        requests:
+          storage: 5Gi

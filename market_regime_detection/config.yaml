@@ -1,0 +1,108 @@
+# Market Regime Detection Configuration
+id: MARKET_REGIME_V1
+version: 1.0
+purpose: Detect market regimes using HMM-GARCH for forex pairs
+
+# Supported forex pairs
+pairs:
+  - USD_JPY
+  - EUR_USD
+
+# Supported timeframes (H1 and H4 only)
+timeframes:
+  - H1  # 1 hour
+  - H4  # 4 hours
+
+# HMM Model Configuration
+hmm:
+  n_states: 3  # Number of hidden states (e.g., low-vol/bull, high-vol/bear, neutral)
+  covariance_type: "full"  # Covariance type: 'spherical', 'diag', 'full', 'tied'
+  n_iter: 500  # Maximum number of iterations
+  tol: 0.01  # Convergence threshold
+  random_state: 42
+
+# GARCH Model Configuration
+garch:
+  p: 1  # GARCH lag order
+  q: 1  # ARCH lag order
+  vol: "GARCH"  # Volatility process: GARCH, EGARCH, etc.
+  dist: "normal"  # Error distribution: normal, studentst, skewt
+
+# Feature Engineering
+features:
+  # Rolling window sizes (in periods)
+  volatility_window: 20  # For rolling standard deviation
+  rsi_window: 14  # Relative Strength Index period
+  macd_fast: 12  # MACD fast EMA period
+  macd_slow: 26  # MACD slow EMA period
+  macd_signal: 9  # MACD signal line period
+  atr_window: 14  # Average True Range period
+
+# Macroeconomic Indicators (daily FRED series). Requires FRED_API_KEY in env when enabled.
+# See MACRO_INDICATORS.md. Override fred_series in config to subset.
+macro_indicators:
+  enabled: true
+  fred_series:
+    - FEDFUNDS   # Effective federal funds rate
+    - DGS2       # 2y Treasury
+    - DGS10      # 10y Treasury
+    - DGS30      # 30y Treasury
+    - T10Y2Y     # 10y-2y spread
+    - T10Y3M     # 10y-3m spread
+    - T10YIE     # 10y breakeven inflation
+    - SP500      # S&P 500
+    - VIXCLS     # VIX
+    - DTWEXBGS   # Broad USD index
+    - USEPUINDXD # Economic Policy Uncertainty index
+    - USRECD     # Daily recession indicator
+  update_frequency: daily
+  forward_fill: true
+
+# Enrichment (before training): z-score, PCA on macro, SMA/EMA on PCs, skew/kurtosis. Fit on each run.
+enrichment:
+  pca_variance_threshold: 0.95  # Keep components until this explained variance
+  pca_max_components: 5        # Cap number of PCs (schema supports pc1..pc5)
+  sma_ema_windows: [30, 50, 100, 200]  # Windows for SMA and EMA on each PC series
+
+# Data Sources
+data_sources:
+  forex:
+    provider: "oanda"  # or "yahoo", "fmp"
+    lookback_days: 365  # Historical data to fetch
+  macro:
+    provider: "fred"  # Federal Reserve Economic Data or alternative
+
+# ClickHouse Configuration
+clickhouse:
+  database: ""  # Set via CLICKHOUSE_DATABASE env var
+  tables:
+    regimes: "mr_regime_states"  # Main regime table (mr_ = market_regime)
+    transitions: "mr_transition_matrices"  # Transition matrix storage
+    features: "feature_data"  # Optional: store computed features
+  engine: "MergeTree"
+  partition_by: "toYYYYMM(timestamp)"
+  order_by: "(pair, timeframe, timestamp)"
+
+# Regime State Mapping (state 0=bear, 1=neutral, 2=bull; stabilized by mean log_return ascending)
+regime_labels:
+  0: "bear"
+  1: "neutral"
+  2: "bull"
+
+# Confidence Thresholds
+confidence:
+  min_probability: 0.7  # Minimum state probability for high confidence
+  min_aic_improvement: 10  # Minimum AIC improvement vs baseline
+
+# API Configuration
+api:
+  title: "Market Regime Detection API"
+  version: "1.0.0"
+  description: "API for querying market regime states, forecasts, and model metrics"
+  max_history_days: 730  # Maximum historical data to return
+  cache_ttl_seconds: 60  # Cache time-to-live for current regime queries
+
+# Logging
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"

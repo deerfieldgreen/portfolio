@@ -1,0 +1,7 @@
+vectorbt>=0.26.0
+oandapyV20>=0.7.2
+clickhouse-connect>=0.7.0
+pandas>=2.0.0
+numpy>=1.24.0
+PyYAML>=6.0
+ta>=0.11.0
